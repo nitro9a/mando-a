@@ -1,0 +1,11 @@
+Names of databases:
+
+mando-a_all.db
+mando-a_unread.db
+mando-a_read.db
+
+Name of table:
+Mando_a
+
+Name of first column:
+Mandoa
