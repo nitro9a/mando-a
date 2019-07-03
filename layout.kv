@@ -1,0 +1,45 @@
+<Button>:
+    size_hint: .2, .05
+    color: (0/255., 163/255., 164/255., 1)
+    background_normal: ''
+    background_color: (11/255., 0/255., 164/255., 1)
+    allow_stretch: False
+    keep_ratio: True
+<Label>:
+    size_hint: .2, .05
+    pos_hint: {'top': .65, 'center_x': .5}
+    color: (0/255., 163/255., 164/255., 1)
+    background_normal: ''
+    background_color: (11/255., 0/255., 164/255., 1)
+    allow_stretch: False
+    keep_ratio: True
+
+WindowManager:
+    WordADay:
+    UnreadWords:
+    ReadWords:
+    Favorites:
+
+<WordADay>:
+    name: "word"
+    get: get
+    translation: translation
+    ScaleButton:
+        id: get
+        text: "Get a Word"
+        pos_hint: {'top': .85, 'center_x': .5}
+        on_press: root.random_word()
+    ScaleLabel:
+        id: translation
+        text: ""
+        pos_hint: {'top': .25, 'center_x': .5}
+
+<UnreadWords>:
+    name: "unread"
+
+<ReadWords>:
+    name: "read"
+
+<Favorites>:
+    name: "favorites"
+
