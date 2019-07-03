@@ -10,20 +10,18 @@ def access_word_table(database) -> List[Word]:
         words = cursor.fetchall()
     return words
 
-
-
 # Can you list if not read?
 
 def mark_as_read(database, Mandoa):
     with DatabaseConnection(database) as connection:
         cursor = connection.cursor()
-
         cursor.execute('UPDATE Mando_a SET read=1 WHERE Mandoa=?', (str(Mandoa),))
 
 def remove_word(database, Mandoa):
     with DatabaseConnection(database) as connection:
         cursor = connection.cursor()
         cursor.execute('DELETE FROM Mando_a WHERE Mandoa=?', (str(Mandoa),))
+
 
 def add_word(database, Mandoa, Pronunciation, English, Read):
     with DatabaseConnection(database) as connection:
