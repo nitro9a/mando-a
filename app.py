@@ -65,7 +65,9 @@ class WordADay(Screen):
                 print (str(random_w['Word']))
 
                 #self.translation.text = str(textwrap.wrap((f'Word: {str(word)}\nPronunciation: {str(pro)}\nEnglish: {str(eng)}'), width = 6))
-                self.translation.text = (f'Word: {str(word)}\nPronunciation: {str(pro)}\nEnglish: {str(eng)}')
+                text_result = (f'Word: {str(word)}\nPronunciation: {str(pro)}\nEnglish: {str(eng)}')
+                #self.translation.text = '\n'.join(textwrap.wrap(text_result, width=40, replace_whitespace=False))
+                self.translation.text = text_result
                 #TODO look at exercise dice, gen_ex_die, for line in text - figure out text wrapping
 
                 #mark as read in the all table
@@ -125,7 +127,8 @@ if __name__=="__main__":
     #TODO Add what happens when there are no words left
     #TODO Notifications
     #TODO Figure out why program is crashing seemingly randomly on random choice - FINISHED
-
+    #TODO Limit length of entries?
+    #TODO Make pretty
 
 '''
 https://stackoverflow.com/questions/38353957/output-text-in-kivy

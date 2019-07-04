@@ -4,12 +4,18 @@ from kivy.lang import Builder
 root = Builder.load_string('''
 <ScaleLabel@Label>:
 	_scale: 1. if self.texture_size[0] < self.width else float(self.width) / self.texture_size[0]
+	bcolor: 1,1,1,1
 	canvas.before:
 		PushMatrix
 		Scale:
 			origin: self.center
 			x: self._scale or 1.
 			y: self._scale or 1.
+		Color:
+			rgba: self.bcolor
+		Rectangle:
+			pos: self.pos
+			size: self.size
 	canvas.after:
 		PopMatrix
 <-ScaleButton@Button>:
@@ -43,11 +49,14 @@ BoxLayout:
 		text: 'my scale text here (%d, %.2f)' % (self.width, self._scale)
 		padding: dp(12), dp(12)
 		font_size: self.height * 0.5
+		bcolor: (1,1,1,1)
+
 	ScaleButton:
 		size_hint_y: 0.2
 		text: 'scale button'
 		padding: dp(12), dp(12)
 		font_size: self.height * 0.5
+		
 	Widget
 ''')
 

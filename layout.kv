@@ -6,7 +6,7 @@
     allow_stretch: False
     keep_ratio: True
 <ScaleLabel>:
-    size_hint: 1, .05
+    size_hint: .5, .5
     pos_hint: {'top': .65, 'center_x': .5}
     color: (0/255., 163/255., 164/255., 1)
     background_normal: ''
@@ -32,8 +32,15 @@ WindowManager:
     ScaleLabel:
         id: translation
         text: ""
-        pos_hint: {'top': .25, 'center_x': .5}
-        font_size: self.height * 0.5
+        pos_hint: {'top': .65, 'center_x': .5}
+        size_hint: .7, .5
+        font_size: 25
+        valign: 'top'
+        halign: 'center'
+        text_size: self.size
+        height: self.texture_size[1]
+        bcolor: (.9, .8, 0, 1)
+
 
 <UnreadWords>:
     name: "unread"
