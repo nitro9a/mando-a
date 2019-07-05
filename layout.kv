@@ -1,53 +1,254 @@
+#: import NoTransition kivy.uix.screenmanager.NoTransition
+
+
 <ScaleButton>:
     size_hint: .2, .05
-    color: (0/255., 163/255., 164/255., 1)
+    color: (0/255., 0/255., 0/255., 1)
     background_normal: ''
-    background_color: (11/255., 0/255., 164/255., 1)
+    background_color: (155/255., 155/255., 155/255., 1)
     allow_stretch: False
     keep_ratio: True
 <ScaleLabel>:
     size_hint: .5, .5
     pos_hint: {'top': .65, 'center_x': .5}
-    color: (0/255., 163/255., 164/255., 1)
+    color: (0/255., 0/255., 0/255., 1)
     background_normal: ''
-    background_color: (11/255., 0/255., 164/255., 1)
+    bcolor: (155/255., 155/255., 155/255., 1)
     allow_stretch: False
     keep_ratio: True
 
 WindowManager:
+    transition: NoTransition()
+
     WordADay:
     UnreadWords:
     ReadWords:
     Favorites:
 
+
 <WordADay>:
+
     name: "word"
     get: get
     translation: translation
-    ScaleButton:
-        id: get
-        text: "Get a Word"
-        pos_hint: {'top': .85, 'center_x': .5}
-        on_press: root.random_word()
-    ScaleLabel:
-        id: translation
-        text: ""
-        pos_hint: {'top': .65, 'center_x': .5}
-        size_hint: .7, .5
-        font_size: 25
-        valign: 'top'
-        halign: 'center'
-        text_size: self.size
-        height: self.texture_size[1]
-        bcolor: (.9, .8, 0, 1)
 
+    BoxLayout:
+        spacing: 10
+        padding: 10
+        orientation: "vertical"
+        rows: 3
+        cols: 1
+
+        GridLayout:
+            cols: 4
+            rows: 1
+            spacing: 0
+            size_hint_y: 5
+
+            ScaleButton:
+                id: page1
+                text: "Page 1"
+                on_release:
+                    app.root.current = "word"
+
+            ScaleButton:
+                id: page2
+                text: "Page 2"
+                on_release:
+                    app.root.current = "unread"
+
+            ScaleButton:
+                id: page3
+                text: "Page 3"
+                on_release:
+                    app.root.current = "read"
+
+            ScaleButton:
+                id: page4
+                text: "Page 4"
+                on_release:
+                    app.root.current = "favorites"
+
+        GridLayout:
+            cols: 1
+            rows: 1
+            spacing: 10
+            size_hint_y: 30
+
+            ScaleButton:
+                id: get
+                text: "Get a Word"
+                pos_hint: {'top': .85, 'center_x': .5}
+                on_press: root.random_word()
+
+        GridLayout:
+            cols: 1
+            rows: 1
+            spacing: 10
+            size_hint_y: 65
+
+            ScaleLabel:
+                id: translation
+                text: ""
+                pos_hint: {'top': .65, 'center_x': .5}
+                size_hint: .7, .5
+                font_size: 25
+                valign: 'top'
+                halign: 'center'
+                text_size: self.size
+                height: self.texture_size[1]
 
 <UnreadWords>:
     name: "unread"
 
+    BoxLayout:
+        spacing: 10
+        padding: 10
+        orientation: "vertical"
+        rows: 3
+        cols: 1
+
+        GridLayout:
+            cols: 4
+            rows: 1
+            spacing: 0
+            size_hint_y: 5
+
+            ScaleButton:
+                id: page1
+                text: "Page 1"
+                on_release:
+                    app.root.current = "word"
+
+            ScaleButton:
+                id: page2
+                text: "Page 2"
+                on_release:
+                    app.root.current = "unread"
+
+            ScaleButton:
+                id: page3
+                text: "Page 3"
+                on_release:
+                    app.root.current = "read"
+
+            ScaleButton:
+                id: page4
+                text: "Page 4"
+                on_release:
+                    app.root.current = "favorites"
+
+        GridLayout:
+            cols: 4
+            rows: 1
+            spacing: 0
+            size_hint_y: 30
+
+        GridLayout:
+            cols: 4
+            rows: 1
+            spacing: 0
+            size_hint_y: 65
+
 <ReadWords>:
     name: "read"
+    BoxLayout:
+        spacing: 10
+        padding: 10
+        orientation: "vertical"
+        rows: 3
+        cols: 1
+
+        GridLayout:
+            cols: 4
+            rows: 1
+            spacing: 0
+            size_hint_y: 5
+
+            ScaleButton:
+                id: page1
+                text: "Page 1"
+                on_release:
+                    app.root.current = "word"
+
+            ScaleButton:
+                id: page2
+                text: "Page 2"
+                on_release:
+                    app.root.current = "unread"
+
+            ScaleButton:
+                id: page3
+                text: "Page 3"
+                on_release:
+                    app.root.current = "read"
+
+            ScaleButton:
+                id: page4
+                text: "Page 4"
+                on_release:
+                    app.root.current = "favorites"
+
+        GridLayout:
+            cols: 4
+            rows: 1
+            spacing: 0
+            size_hint_y: 30
+
+        GridLayout:
+            cols: 4
+            rows: 1
+            spacing: 0
+            size_hint_y: 65
 
 <Favorites>:
     name: "favorites"
+    BoxLayout:
+        spacing: 10
+        padding: 10
+        orientation: "vertical"
+        rows: 3
+        cols: 1
+
+        GridLayout:
+            cols: 4
+            rows: 1
+            spacing: 0
+            size_hint_y: 5
+
+            ScaleButton:
+                id: page1
+                text: "Page 1"
+                on_release:
+                    app.root.current = "word"
+
+            ScaleButton:
+                id: page2
+                text: "Page 2"
+                on_release:
+                    app.root.current = "unread"
+
+            ScaleButton:
+                id: page3
+                text: "Page 3"
+                on_release:
+                    app.root.current = "read"
+
+            ScaleButton:
+                id: page4
+                text: "Page 4"
+                on_release:
+                    app.root.current = "favorites"
+
+        GridLayout:
+            cols: 4
+            rows: 1
+            spacing: 0
+            size_hint_y: 30
+
+        GridLayout:
+            cols: 4
+            rows: 1
+            spacing: 0
+            size_hint_y: 65
 

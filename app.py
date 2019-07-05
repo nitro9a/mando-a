@@ -9,8 +9,9 @@ from kivy.uix.button import Button
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.label import Label
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
 from kivy.properties import ObjectProperty
+
 
 word_dict = {}
 
@@ -33,14 +34,17 @@ class WindowManager(ScreenManager):
     pass
 
 class WordADay(Screen):
-
     get = ObjectProperty(None)
     translation = ObjectProperty(None)
 
+
     def __init__(self, **kwargs):
         super(WordADay, self).__init__(**kwargs)
-        self.label = Label(text = '')
-        self.add_widget(self.label)
+
+
+        #self.label = Label(text = '')
+        #self.add_widget(self.label)
+
 
     def random_word(self):
         con = sqlite3.connect('mando-a_unread.db')
@@ -118,17 +122,21 @@ if __name__=="__main__":
     WordApp().run()
 
 
-    #TODO Make pages
+    #TODO Make pages - FINISHED
     #TODO Create a new list of unread words, 'remove word' from 'unread word' list - FINISHED
     #TODO Add random word to a 'read words' list - FINISHED
+    #TODO Figure out why program is crashing seemingly randomly on random choice - FINISHED
+    #TODO Page 2
+    #TODO Page 3
+    #TODO Page 4
     #TODO Add reset
     #TODO Add ability to favorite
     #TODO Edit database to have only unique entries
     #TODO Add what happens when there are no words left
     #TODO Notifications
-    #TODO Figure out why program is crashing seemingly randomly on random choice - FINISHED
     #TODO Limit length of entries?
     #TODO Make pretty
+    #TODO Figure out how to make page navigation buttons uniform even when the rest of the layout is different
 
 '''
 https://stackoverflow.com/questions/38353957/output-text-in-kivy
