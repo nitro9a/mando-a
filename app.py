@@ -1,6 +1,7 @@
 import sqlite3
 import random
 import textwrap
+import mando_a
 from utils import database, scalelabel
 from kivy.app import App
 from kivy.lang import Builder
@@ -21,8 +22,7 @@ yellow = (.9, .8, 0, 1)
 red = (.9, .3, 0, 1)
 orange = (.9, .5, 0, 1)
 
-class UnreadWords(Screen):
-    pass
+
 
 class ReadWords(Screen):
     pass
@@ -40,11 +40,6 @@ class WordADay(Screen):
 
     def __init__(self, **kwargs):
         super(WordADay, self).__init__(**kwargs)
-
-
-        #self.label = Label(text = '')
-        #self.add_widget(self.label)
-
 
     def random_word(self):
         con = sqlite3.connect('mando-a_unread.db')
@@ -69,10 +64,10 @@ class WordADay(Screen):
                 print (str(random_w['Word']))
 
                 #self.translation.text = str(textwrap.wrap((f'Word: {str(word)}\nPronunciation: {str(pro)}\nEnglish: {str(eng)}'), width = 6))
-                text_result = (f'Word: {str(word)}\nPronunciation: {str(pro)}\nEnglish: {str(eng)}')
+                text_result = (f'\n\nWord: {str(word)}\nPronunciation: {str(pro)}\nEnglish: {str(eng)}')
                 #self.translation.text = '\n'.join(textwrap.wrap(text_result, width=40, replace_whitespace=False))
                 self.translation.text = text_result
-                #TODO look at exercise dice, gen_ex_die, for line in text - figure out text wrapping
+
 
                 #mark as read in the all table
                 database.mark_as_read('mando-a_all.db', str(random_w['Word']))
@@ -112,6 +107,29 @@ def get_words(database):
 
         word_dict.update(entry)
 
+class UnreadWords(Screen):
+
+    reset = ObjectProperty(None)
+
+    def __init__(self, **kwargs):
+        super(UnreadWords, self).__init__(**kwargs)
+
+    def reset_databases(self):
+
+        mando_a.delete_database_all('mando-a_all.db')
+        mando_a.delete_database_unread('mando-a_unread.db')
+        mando_a.delete_database_read('mando-a_read.db')
+
+        mando_a.create_database('mando-a.csv', 'mando-a_all.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
+        (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
+
+        mando_a.create_database('mando-a.csv', 'mando-a_unread.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
+        (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
+
+        mando_a.create_database('mando-a_read.csv', 'mando-a_read.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
+        (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
+
+
 kv = Builder.load_file("layout.kv")
 
 class WordApp(App):
@@ -121,15 +139,16 @@ class WordApp(App):
 if __name__=="__main__":
     WordApp().run()
 
-
+    #TODO look at exercise dice, gen_ex_die, for line in text - figure out text wrapping - FINISHED
     #TODO Make pages - FINISHED
     #TODO Create a new list of unread words, 'remove word' from 'unread word' list - FINISHED
     #TODO Add random word to a 'read words' list - FINISHED
     #TODO Figure out why program is crashing seemingly randomly on random choice - FINISHED
+    #TODO Add reset - FINISHED
+    #TODO Add table with scrolling text results
     #TODO Page 2
     #TODO Page 3
     #TODO Page 4
-    #TODO Add reset
     #TODO Add ability to favorite
     #TODO Edit database to have only unique entries
     #TODO Add what happens when there are no words left
@@ -137,6 +156,7 @@ if __name__=="__main__":
     #TODO Limit length of entries?
     #TODO Make pretty
     #TODO Figure out how to make page navigation buttons uniform even when the rest of the layout is different
+    #TODO Add touch events
 
 '''
 https://stackoverflow.com/questions/38353957/output-text-in-kivy

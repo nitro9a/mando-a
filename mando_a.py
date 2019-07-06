@@ -10,7 +10,6 @@ def create_database(csv_file, database, execute_create, execute_insert):
 
     sql = sqlite3.connect(database)
     cursor = sql.cursor()
-
     cursor.execute(execute_create)
 
     for row in reader:
@@ -19,6 +18,21 @@ def create_database(csv_file, database, execute_create, execute_insert):
     f.close()
     sql.commit()
     sql.close()
+
+def delete_database_all(database):
+    sql = sqlite3.connect(database)
+    cursor = sql.cursor()
+    cursor.execute("DROP TABLE Mando_a")
+
+def delete_database_unread(database):
+    sql = sqlite3.connect(database)
+    cursor = sql.cursor()
+    cursor.execute("DROP TABLE Mando_a")
+
+def delete_database_read(database):
+    sql = sqlite3.connect(database)
+    cursor = sql.cursor()
+    cursor.execute("DROP TABLE Mando_a")
 
 create_database('mando-a.csv', 'mando-a_all.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
     (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")

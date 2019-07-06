@@ -1,5 +1,5 @@
 #: import NoTransition kivy.uix.screenmanager.NoTransition
-
+#: include mando_a
 
 <ScaleButton>:
     size_hint: .2, .05
@@ -19,12 +19,10 @@
 
 WindowManager:
     transition: NoTransition()
-
     WordADay:
     UnreadWords:
     ReadWords:
     Favorites:
-
 
 <WordADay>:
 
@@ -100,7 +98,7 @@ WindowManager:
 
 <UnreadWords>:
     name: "unread"
-
+    reset: reset
     BoxLayout:
         spacing: 10
         padding: 10
@@ -142,13 +140,19 @@ WindowManager:
             cols: 4
             rows: 1
             spacing: 0
-            size_hint_y: 30
+            size_hint_y: 65
 
         GridLayout:
             cols: 4
             rows: 1
             spacing: 0
-            size_hint_y: 65
+            size_hint_y: 30
+
+            ScaleButton:
+                id: reset
+                text: "Reset Dictionaries"
+                pos_hint: {'top': .85, 'center_x': .5}
+                on_press: root.reset_databases()
 
 <ReadWords>:
     name: "read"
