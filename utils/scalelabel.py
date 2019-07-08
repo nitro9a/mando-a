@@ -42,6 +42,7 @@ root = Builder.load_string('''
 			size: self.texture_size
 			pos: int(self.center_x - self.texture_size[0] / 2.), int(self.center_y - self.texture_size[1] / 2.)
 		PopMatrix
+		
 BoxLayout:
 	orientation: 'vertical'
 	ScaleLabel:

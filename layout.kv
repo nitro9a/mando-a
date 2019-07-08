@@ -16,6 +16,9 @@
     bcolor: (155/255., 155/255., 155/255., 1)
     allow_stretch: False
     keep_ratio: True
+<ScrollableLabel>:
+    bcolor: (155/255., 155/255., 155/255., 1)
+    color: (0/255., 0/255., 0/255., 1)
 
 WindowManager:
     transition: NoTransition()
@@ -99,6 +102,7 @@ WindowManager:
 <UnreadWords>:
     name: "unread"
     reset: reset
+    unread_table: unread_table
     BoxLayout:
         spacing: 10
         padding: 10
@@ -141,6 +145,11 @@ WindowManager:
             rows: 1
             spacing: 0
             size_hint_y: 65
+
+            ScrollableLabel:
+                id: unread_table
+                text: ""
+                bcolor: (155/255., 155/255., 155/255., 1)
 
         GridLayout:
             cols: 4

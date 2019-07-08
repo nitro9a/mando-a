@@ -2,7 +2,7 @@ import sqlite3
 import random
 import textwrap
 import mando_a
-from utils import database, scalelabel
+from utils import database, scalelabel, scrollablelabel
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.widget import Widget
@@ -47,6 +47,23 @@ class WordADay(Screen):
         cursor.execute("SELECT * from Mando_a")
         rowcount = len(cursor.fetchall())
 
+        def get_words(database):
+            count = -1
+            for word in database:
+
+                count += 1
+
+                entry = {
+                    count : {
+                        'Word': word[0],
+                        'Pronunciation': word[1],
+                        'English': word[2],
+                        'Read': word[3]
+                }
+                }
+
+                word_dict.update(entry)
+
         def get_random_word():
             #get words from the unread table and add them to word_dict using function "get_words"
             get_words(database.access_word_table('mando-a_unread.db'))
@@ -68,7 +85,6 @@ class WordADay(Screen):
                 #self.translation.text = '\n'.join(textwrap.wrap(text_result, width=40, replace_whitespace=False))
                 self.translation.text = text_result
 
-
                 #mark as read in the all table
                 database.mark_as_read('mando-a_all.db', str(random_w['Word']))
 
@@ -89,26 +105,8 @@ class WordADay(Screen):
         elif rowcount >= 1:
             get_random_word()
 
-
-def get_words(database):
-    count = -1
-    for word in database:
-
-        count += 1
-
-        entry = {
-            count : {
-                'Word': word[0],
-                'Pronunciation': word[1],
-                'English': word[2],
-                'Read': word[3]
-        }
-        }
-
-        word_dict.update(entry)
-
 class UnreadWords(Screen):
-
+    unread_table = ObjectProperty(None)
     reset = ObjectProperty(None)
 
     def __init__(self, **kwargs):
@@ -129,6 +127,9 @@ class UnreadWords(Screen):
         mando_a.create_database('mando-a_read.csv', 'mando-a_read.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
         (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
 
+    def display_database(self):
+        access_word_table('mando-a_unread')
+        print(words)
 
 kv = Builder.load_file("layout.kv")
 
@@ -138,6 +139,7 @@ class WordApp(App):
 
 if __name__=="__main__":
     WordApp().run()
+
 
     #TODO look at exercise dice, gen_ex_die, for line in text - figure out text wrapping - FINISHED
     #TODO Make pages - FINISHED
