@@ -144,7 +144,7 @@ WindowManager:
             cols: 4
             rows: 1
             spacing: 0
-            size_hint_y: 65
+            size_hint_y: 80
 
             ScrollableLabel:
                 id: unread_table
@@ -155,13 +155,14 @@ WindowManager:
             cols: 4
             rows: 1
             spacing: 0
-            size_hint_y: 30
+            size_hint_y: 15
 
             ScaleButton:
                 id: reset
                 text: "Reset Dictionaries"
                 pos_hint: {'top': .85, 'center_x': .5}
                 on_press: root.reset_databases()
+                on_touch_down: root.reset_databases()
 
 <ReadWords>:
     name: "read"

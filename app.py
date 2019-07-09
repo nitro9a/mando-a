@@ -99,7 +99,6 @@ class WordADay(Screen):
             except KeyError:
                 print("key error")
 
-
         if rowcount == 0:
             print("finished")
         elif rowcount >= 1:
@@ -147,6 +146,9 @@ if __name__=="__main__":
     #TODO Add random word to a 'read words' list - FINISHED
     #TODO Figure out why program is crashing seemingly randomly on random choice - FINISHED
     #TODO Add reset - FINISHED
+    #TODO Figure out how to make page navigation buttons uniform even when the rest of the layout is different (it works,
+    # continued... if you use the same amount of layouts no matter their size.  Can probably adjust padding for
+    # different number of layouts - FINISHED
     #TODO Add table with scrolling text results
     #TODO Page 2
     #TODO Page 3
@@ -157,7 +159,6 @@ if __name__=="__main__":
     #TODO Notifications
     #TODO Limit length of entries?
     #TODO Make pretty
-    #TODO Figure out how to make page navigation buttons uniform even when the rest of the layout is different
     #TODO Add touch events
 
 '''
