@@ -57,6 +57,7 @@ WindowManager:
                 text: "Page 2"
                 on_release:
                     app.root.current = "unread"
+                    root.manager.get_screen('unread').display_database()
 
             ScaleButton:
                 id: page3
@@ -103,6 +104,7 @@ WindowManager:
     name: "unread"
     reset: reset
     unread_table: unread_table
+
     BoxLayout:
         spacing: 10
         padding: 10
@@ -127,6 +129,8 @@ WindowManager:
                 text: "Page 2"
                 on_release:
                     app.root.current = "unread"
+                    root.display_database()
+                    root.manager.get_screen('unread').display_database()
 
             ScaleButton:
                 id: page3
@@ -148,7 +152,6 @@ WindowManager:
 
             ScrollableLabel:
                 id: unread_table
-                text: ""
                 bcolor: (155/255., 155/255., 155/255., 1)
 
         GridLayout:
@@ -190,6 +193,7 @@ WindowManager:
                 text: "Page 2"
                 on_release:
                     app.root.current = "unread"
+                    root.manager.get_screen('unread').display_database()
 
             ScaleButton:
                 id: page3

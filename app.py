@@ -22,8 +22,6 @@ yellow = (.9, .8, 0, 1)
 red = (.9, .3, 0, 1)
 orange = (.9, .5, 0, 1)
 
-
-
 class ReadWords(Screen):
     pass
 
@@ -36,7 +34,6 @@ class WindowManager(ScreenManager):
 class WordADay(Screen):
     get = ObjectProperty(None)
     translation = ObjectProperty(None)
-
 
     def __init__(self, **kwargs):
         super(WordADay, self).__init__(**kwargs)
@@ -80,9 +77,8 @@ class WordADay(Screen):
                 eng =  (str(random_w['English']))
                 print (str(random_w['Word']))
 
-                #self.translation.text = str(textwrap.wrap((f'Word: {str(word)}\nPronunciation: {str(pro)}\nEnglish: {str(eng)}'), width = 6))
                 text_result = (f'\n\nWord: {str(word)}\nPronunciation: {str(pro)}\nEnglish: {str(eng)}')
-                #self.translation.text = '\n'.join(textwrap.wrap(text_result, width=40, replace_whitespace=False))
+
                 self.translation.text = text_result
 
                 #mark as read in the all table
@@ -105,8 +101,10 @@ class WordADay(Screen):
             get_random_word()
 
 class UnreadWords(Screen):
+
     unread_table = ObjectProperty(None)
     reset = ObjectProperty(None)
+    entry = ObjectProperty(None)
 
     def __init__(self, **kwargs):
         super(UnreadWords, self).__init__(**kwargs)
@@ -127,8 +125,8 @@ class UnreadWords(Screen):
         (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
 
     def display_database(self):
-        access_word_table('mando-a_unread')
-        print(words)
+        text_result = str(random.randint(1,100))
+        self.unread_table.text = text_result
 
 kv = Builder.load_file("layout.kv")
 
@@ -138,6 +136,8 @@ class WordApp(App):
 
 if __name__=="__main__":
     WordApp().run()
+
+
 
 
     #TODO look at exercise dice, gen_ex_die, for line in text - figure out text wrapping - FINISHED
