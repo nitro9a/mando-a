@@ -145,20 +145,60 @@ WindowManager:
                     app.root.current = "favorites"
 
         GridLayout:
-            cols: 4
-            rows: 1
+            cols: 1
+            rows: 2
             spacing: 0
             size_hint_y: 80
 
-            ScrollableLabel:
+            BoxLayout:
+                size_hint_y: 0.1
+                Label:
+                    text: 'Word'
+                Label:
+                    text: 'Pronunciation'
+                Label:
+                    text: 'English'
+            BoxLayout:
                 id: unread_table
-                bcolor: (155/255., 155/255., 155/255., 1)
+                RecycleView:
+                    data: [{'text': f'{Word}'} for Word, Pronunciation, English in root.rows]
+                    viewclass: "Label"
+                    RecycleBoxLayout:
+                        default_size: None, dp(56)
+                        default_size_hint: 1, None
+                        size_hint_y: None
+                        height: self.minimum_height
+                        orientation: "vertical"
+                RecycleView:
+                    data: [{'text': f'{Pronunciation}'} for Word, Pronunciation, English in root.rows]
+                    viewclass: "Label"
+                    RecycleBoxLayout:
+                        default_size: None, dp(56)
+                        orientation: "vertical"
+                        default_size_hint: 1, None
+                        size_hint_y: None
+                        height: self.minimum_height
+                RecycleView:
+                    data: [{'text': f'{English}'} for Word, Pronunciation, English in root.rows]
+                    viewclass: "Label"
+                    RecycleBoxLayout:
+                        default_size: None, dp(56)
+                        orientation: "vertical"
+                        default_size_hint: 1, None
+                        size_hint_y: None
+                        height: self.minimum_height
+
 
         GridLayout:
-            cols: 4
+            cols: 2
             rows: 1
             spacing: 0
             size_hint_y: 15
+
+            ScaleButton:
+                size_hint_y: 0.1
+                text: "Display Database"
+                on_press: root.display_database()
 
             ScaleButton:
                 id: reset

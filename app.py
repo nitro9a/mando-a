@@ -11,8 +11,7 @@ from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.label import Label
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
-from kivy.properties import ObjectProperty
-
+from kivy.properties import ObjectProperty, ListProperty
 
 word_dict = {}
 
@@ -104,7 +103,7 @@ class UnreadWords(Screen):
 
     unread_table = ObjectProperty(None)
     reset = ObjectProperty(None)
-    entry = ObjectProperty(None)
+    rows = ListProperty([("Word", "Pronunciation", "English")])
 
     def __init__(self, **kwargs):
         super(UnreadWords, self).__init__(**kwargs)
@@ -125,8 +124,16 @@ class UnreadWords(Screen):
         (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
 
     def display_database(self):
-        text_result = str(random.randint(1,100))
-        self.unread_table.text = text_result
+        con = sqlite3.connect('mando-a_unread.db')
+        cursor = con.cursor()
+        cursor.execute("SELECT Mandoa, Pronunciation, English from Mando_a")
+        self.rows = cursor.fetchall()
+
+
+        #for row in rows:
+            #self.unread_table.text = str(row)
+
+
 
 kv = Builder.load_file("layout.kv")
 
@@ -136,6 +143,7 @@ class WordApp(App):
 
 if __name__=="__main__":
     WordApp().run()
+
 
 
 
