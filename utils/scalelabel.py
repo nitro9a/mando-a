@@ -55,7 +55,7 @@ BoxLayout:
 	ScaleButton:
 		size_hint_y: 0.2
 		text: 'scale button'
-		padding: dp(12), dp(12)
+		padding: dp(0), dp(0)
 		font_size: self.height * 0.5
 		
 	Widget

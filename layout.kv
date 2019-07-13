@@ -19,6 +19,10 @@
 <ScrollableLabel>:
     bcolor: (155/255., 155/255., 155/255., 1)
     color: (0/255., 0/255., 0/255., 1)
+<SelectableButton>:
+    color: (0/255., 255/255., 0/255., 1)
+    background_color: (0/255., 155/255., 155/255., 1)
+
 
 WindowManager:
     transition: NoTransition()
@@ -109,7 +113,7 @@ WindowManager:
         spacing: 10
         padding: 10
         orientation: "vertical"
-        rows: 3
+        rows: 4
         cols: 1
 
         GridLayout:
@@ -143,28 +147,37 @@ WindowManager:
                 text: "Page 4"
                 on_release:
                     app.root.current = "favorites"
+        GridLayout:
+            cols: 4
+            rows: 1
+            spacing: 0
+            size_hint_y: 5
+
+            ScaleLabel:
+                text: "Unread Words"
+                size_hint_y: 5
 
         GridLayout:
             cols: 1
-            rows: 2
+            rows: 1
             spacing: 0
             size_hint_y: 80
 
             BoxLayout:
                 id: unread_table
+
                 RV:
+                    viewclass: 'SelectableButton'
+                    size_hint_y: 1
+                    font_size: self.height * 0.5
                     data: [{'text': f'{entry[0]}'} for entry in root.rows]
+
 
         GridLayout:
             cols: 2
             rows: 1
             spacing: 0
-            size_hint_y: 15
-
-            ScaleButton:
-                size_hint_y: 0.1
-                text: "Display Database"
-                on_press: root.display_database()
+            size_hint_y: 10
 
             ScaleButton:
                 id: reset

@@ -165,9 +165,5 @@ if __name__=="__main__":
     #TODO Add Message Pop-up to RV Buttons
     #TODO Add Mandoa word to button, add pronunciation and English to pop-up
     #TODO Add Search
-
-
-'''
-https://stackoverflow.com/questions/38353957/output-text-in-kivy
-'''
+    #TODO Figure out why the scrolling db in recycleview starts lower than area -FINISHED- and can be pushed further
 
