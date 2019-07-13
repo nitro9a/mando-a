@@ -2,7 +2,7 @@ import sqlite3
 import random
 import textwrap
 import mando_a
-from utils import database, scalelabel, scrollablelabel
+from utils import database, scalelabel, scrollablelabel, recycleselect
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.widget import Widget
@@ -103,7 +103,7 @@ class UnreadWords(Screen):
 
     unread_table = ObjectProperty(None)
     reset = ObjectProperty(None)
-    rows = ListProperty([("Word", "Pronunciation", "English")])
+    rows = ListProperty([("Mandoa", "Pronunciation", "English")])
 
     def __init__(self, **kwargs):
         super(UnreadWords, self).__init__(**kwargs)
@@ -130,11 +130,6 @@ class UnreadWords(Screen):
         self.rows = cursor.fetchall()
 
 
-        #for row in rows:
-            #self.unread_table.text = str(row)
-
-
-
 kv = Builder.load_file("layout.kv")
 
 class WordApp(App):
@@ -143,8 +138,6 @@ class WordApp(App):
 
 if __name__=="__main__":
     WordApp().run()
-
-
 
 
 
@@ -168,6 +161,11 @@ if __name__=="__main__":
     #TODO Limit length of entries?
     #TODO Make pretty
     #TODO Add touch events
+    #TODO See if RV can be combined with scale button
+    #TODO Add Message Pop-up to RV Buttons
+    #TODO Add Mandoa word to button, add pronunciation and English to pop-up
+    #TODO Add Search
+
 
 '''
 https://stackoverflow.com/questions/38353957/output-text-in-kivy

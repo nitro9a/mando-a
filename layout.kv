@@ -151,43 +151,9 @@ WindowManager:
             size_hint_y: 80
 
             BoxLayout:
-                size_hint_y: 0.1
-                Label:
-                    text: 'Word'
-                Label:
-                    text: 'Pronunciation'
-                Label:
-                    text: 'English'
-            BoxLayout:
                 id: unread_table
-                RecycleView:
-                    data: [{'text': f'{Word}'} for Word, Pronunciation, English in root.rows]
-                    viewclass: "Label"
-                    RecycleBoxLayout:
-                        default_size: None, dp(56)
-                        default_size_hint: 1, None
-                        size_hint_y: None
-                        height: self.minimum_height
-                        orientation: "vertical"
-                RecycleView:
-                    data: [{'text': f'{Pronunciation}'} for Word, Pronunciation, English in root.rows]
-                    viewclass: "Label"
-                    RecycleBoxLayout:
-                        default_size: None, dp(56)
-                        orientation: "vertical"
-                        default_size_hint: 1, None
-                        size_hint_y: None
-                        height: self.minimum_height
-                RecycleView:
-                    data: [{'text': f'{English}'} for Word, Pronunciation, English in root.rows]
-                    viewclass: "Label"
-                    RecycleBoxLayout:
-                        default_size: None, dp(56)
-                        orientation: "vertical"
-                        default_size_hint: 1, None
-                        size_hint_y: None
-                        height: self.minimum_height
-
+                RV:
+                    data: [{'text': f'{entry[0]}'} for entry in root.rows]
 
         GridLayout:
             cols: 2
