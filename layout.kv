@@ -1,5 +1,6 @@
 #: import NoTransition kivy.uix.screenmanager.NoTransition
 #: include mando_a
+#: import F kivy.factory.Factory
 
 <ScaleButton>:
     size_hint: .2, .05
@@ -134,7 +135,6 @@ WindowManager:
                 on_release:
                     app.root.current = "unread"
                     root.display_database()
-                    root.manager.get_screen('unread').display_database()
 
             ScaleButton:
                 id: page3
@@ -165,13 +165,11 @@ WindowManager:
 
             BoxLayout:
                 id: unread_table
-
                 RV:
                     viewclass: 'SelectableButton'
                     size_hint_y: 1
                     font_size: self.height * 0.5
                     data: [{'text': f'{entry[0]}'} for entry in root.rows]
-
 
         GridLayout:
             cols: 2

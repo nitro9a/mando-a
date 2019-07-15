@@ -6,6 +6,7 @@ from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.recycleboxlayout import RecycleBoxLayout
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from kivy.uix.popup import Popup
@@ -22,11 +23,12 @@ root = Builder.load_string('''
         size_hint_y: None
         height: self.minimum_height
         orientation: 'vertical'
-
+        
 <SelectableButton>:
     state_image: self.background_normal if self.state == 'normal' else self.background_down
 	disabled_image: self.background_disabled_normal if self.state == 'normal' else self.background_disabled_down
 	_scale: 1. if self.texture_size[0] < self.width else float(self.width) / self.texture_size[0]
+	orientation: 'horizontal'
     # Draw a background to indicate selection
     canvas:
         Color:
@@ -50,20 +52,20 @@ root = Builder.load_string('''
         PopMatrix
             
 <MessageBox>:
-    title: ''
+    title: 'kv'
     size_hint: None, None
     size: 400, 400
 
     BoxLayout:
         orientation: 'vertical'
         Label:
-            text: ''
+            id: lbl
+            text: 'kv'
         Button:
             size_hint: 1, 0.2
             text: 'OK'
             on_press:
-                root.dismiss()     
-        
+                root.dismiss()
         
 ''')
 
@@ -73,9 +75,6 @@ class MessageBox(Popup):
 
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior, RecycleBoxLayout):
     """ Adds selection and focus behaviour to the view. """
-    selected_value = StringProperty('')
-    btn_info = ListProperty(['Button 0 Text', 'Button 1 Text', 'Button 2 Text'])
-
 
 class SelectableButton(RecycleDataViewBehavior, Button):
     """ Add selection support to the Label """
@@ -85,16 +84,14 @@ class SelectableButton(RecycleDataViewBehavior, Button):
         """ Catch and handle the view changes """
         self.index = index
         return super(SelectableButton, self).refresh_view_attrs(rv, index, data)
-
-
     def on_release(self):
         MessageBox().open()
 
 class RV(RecycleView):
+    rv_layout = ObjectProperty(None)
+
     def __init__(self, **kwargs):
         super(RV, self).__init__(**kwargs)
-        self.data = [{'text': "Button " + str(x), 'id': str(x)} for x in range(3)]
-
 
 class RecycleApp(App):
     def build(self):
