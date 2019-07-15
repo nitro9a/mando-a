@@ -1,6 +1,5 @@
 #: import NoTransition kivy.uix.screenmanager.NoTransition
-#: include mando_a
-#: import F kivy.factory.Factory
+
 
 <ScaleButton>:
     size_hint: .2, .05
@@ -23,6 +22,28 @@
 <SelectableButton>:
     color: (0/255., 255/255., 0/255., 1)
     background_color: (0/255., 155/255., 155/255., 1)
+
+<MessageBox>:
+    name: 'mbox'
+    lbl: lbl
+    title: ''
+    size_hint: None, None
+    size: 400, 400
+    on_open:
+        en = [entry[0] for entry in app.root.get_screen('unread').rows]
+        lbl.text = str(en)
+        #print(en)
+
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            id: lbl
+            text: ''
+        Button:
+            size_hint: 1, 0.2
+            text: 'OK'
+            on_press:
+                root.dismiss()
 
 
 WindowManager:
@@ -182,7 +203,7 @@ WindowManager:
                 text: "Reset Dictionaries"
                 pos_hint: {'top': .85, 'center_x': .5}
                 on_press: root.reset_databases()
-                on_touch_down: root.reset_databases()
+
 
 <ReadWords>:
     name: "read"

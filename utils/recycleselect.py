@@ -50,22 +50,7 @@ root = Builder.load_string('''
             size: self.texture_size
             pos: int(self.center_x - self.texture_size[0] / 2.), int(self.center_y - self.texture_size[1] / 2.)
         PopMatrix
-            
-<MessageBox>:
-    title: 'kv'
-    size_hint: None, None
-    size: 400, 400
 
-    BoxLayout:
-        orientation: 'vertical'
-        Label:
-            id: lbl
-            text: 'kv'
-        Button:
-            size_hint: 1, 0.2
-            text: 'OK'
-            on_press:
-                root.dismiss()
         
 ''')
 
@@ -84,12 +69,13 @@ class SelectableButton(RecycleDataViewBehavior, Button):
         """ Catch and handle the view changes """
         self.index = index
         return super(SelectableButton, self).refresh_view_attrs(rv, index, data)
+    def on_press(self):
+        pass
     def on_release(self):
         MessageBox().open()
 
 class RV(RecycleView):
     rv_layout = ObjectProperty(None)
-
     def __init__(self, **kwargs):
         super(RV, self).__init__(**kwargs)
 

@@ -1,7 +1,7 @@
 import sqlite3
+import csv
 import random
 import textwrap
-import mando_a
 from utils import database, scalelabel, scrollablelabel, recycleselect
 from kivy.app import App
 from kivy.lang import Builder
@@ -11,7 +11,7 @@ from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.label import Label
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
-from kivy.properties import ObjectProperty, ListProperty
+from kivy.properties import ObjectProperty, ListProperty, StringProperty
 
 word_dict = {}
 
@@ -110,17 +110,48 @@ class UnreadWords(Screen):
 
     def reset_databases(self):
 
-        mando_a.delete_database_all('mando-a_all.db')
-        mando_a.delete_database_unread('mando-a_unread.db')
-        mando_a.delete_database_read('mando-a_read.db')
+        def create_database(csv_file, database, execute_create, execute_insert):
+            f = open(csv_file,'r')
+            next(f, None)
+            reader = csv.reader(f)
 
-        mando_a.create_database('mando-a.csv', 'mando-a_all.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
+            sql = sqlite3.connect(database)
+            cursor = sql.cursor()
+            cursor.execute(execute_create)
+
+            for row in reader:
+                cursor.execute(execute_insert, row)
+
+            f.close()
+            sql.commit()
+            sql.close()
+
+        def delete_database_all(database):
+            sql = sqlite3.connect(database)
+            cursor = sql.cursor()
+            cursor.execute("DROP TABLE Mando_a")
+
+        def delete_database_unread(database):
+            sql = sqlite3.connect(database)
+            cursor = sql.cursor()
+            cursor.execute("DROP TABLE Mando_a")
+
+        def delete_database_read(database):
+            sql = sqlite3.connect(database)
+            cursor = sql.cursor()
+            cursor.execute("DROP TABLE Mando_a")
+
+        delete_database_all('mando-a_all.db')
+        delete_database_unread('mando-a_unread.db')
+        delete_database_read('mando-a_read.db')
+
+        create_database('mando-a.csv', 'mando-a_all.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
         (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
 
-        mando_a.create_database('mando-a.csv', 'mando-a_unread.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
+        create_database('mando-a.csv', 'mando-a_unread.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
         (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
 
-        mando_a.create_database('mando-a_read.csv', 'mando-a_read.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
+        create_database('mando-a_read.csv', 'mando-a_read.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
         (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
 
     def display_database(self):
@@ -128,7 +159,6 @@ class UnreadWords(Screen):
         cursor = con.cursor()
         cursor.execute("SELECT Mandoa, Pronunciation, English from Mando_a")
         self.rows = cursor.fetchall()
-
 
 kv = Builder.load_file("layout.kv")
 
@@ -166,4 +196,5 @@ if __name__=="__main__":
     #TODO Add Mandoa word to button, add pronunciation and English to pop-up
     #TODO Add Search
     #TODO Figure out why the scrolling db in recycleview starts lower than area -FINISHED- and can be pushed further
-
+    #TODO Make immediate refresh after calling reset_databases
+    #TODO Find if there is a way to stop other py files from loading automatically - maybe putting them in utils?
