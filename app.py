@@ -146,6 +146,7 @@ class WordADay(Screen):
 
                 self.word_dict.clear()
 
+
             except KeyError:
                 print("key error")
 
@@ -203,13 +204,13 @@ class UnreadWords(Screen):
         delete_database_unread('mando-a_unread.db')
         delete_database_read('mando-a_read.db')
 
-        create_database('mando-a.csv', 'mando-a_all.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
+        create_database('mando-a-short.csv', 'mando-a_all.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
         (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
 
-        create_database('mando-a.csv', 'mando-a_unread.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
+        create_database('mando-a-short.csv', 'mando-a_unread.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
         (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
 
-        create_database('mando-a_read.csv', 'mando-a_read.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
+        create_database('mando-a-short.csv', 'mando-a_read.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
         (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
 
     def display_database(self):
@@ -217,12 +218,16 @@ class UnreadWords(Screen):
         cursor = con.cursor()
         cursor.execute("SELECT Mandoa, Pronunciation, English from Mando_a")
         self.rows = cursor.fetchall()
+        self.unread_dict.clear()
 
         for row in self.rows:
             self.unread_dict[row[0]] = [row[0], row[1], row[2]]
 
         self.ids.dat.data = [{'text': key} for key in self.unread_dict.keys()]
-        print(self.unread_dict)
+
+
+
+
 kv = Builder.load_file("layout.kv")
 
 class WordApp(App):
@@ -243,21 +248,23 @@ if __name__=="__main__":
     #TODO Figure out how to make page navigation buttons uniform even when the rest of the layout is different (it works,
     # continued... if you use the same amount of layouts no matter their size.  Can probably adjust padding for
     # different number of layouts - FINISHED
-    #TODO Add table with scrolling text results
+    #TODO Add table with scrolling text results - FINISHED
+    #TODO See if RV can be combined with scale button - FINISHED
+    #TODO Add Message Pop-up to RV Buttons - FINISHED
+    #TODO Add Mandoa word to button, add word, pronunciation, and English to pop-up - FINISHED
+    #TODO Figure out why the scrolling db in recycleview starts lower than area -FINISHED- and can be pushed further
     #TODO Page 2
     #TODO Page 3
     #TODO Page 4
     #TODO Add ability to favorite
     #TODO Edit database to have only unique entries
     #TODO Add what happens when there are no words left
-    #TODO Notifications
+    #TODO Notifications - Plyer
     #TODO Limit length of entries?
     #TODO Make pretty
     #TODO Add touch events
-    #TODO See if RV can be combined with scale button
-    #TODO Add Message Pop-up to RV Buttons
-    #TODO Add Mandoa word to button, add pronunciation and English to pop-up
     #TODO Add Search
-    #TODO Figure out why the scrolling db in recycleview starts lower than area -FINISHED- and can be pushed further
     #TODO Make immediate refresh after calling reset_databases
     #TODO Find if there is a way to stop other py files from loading automatically - maybe putting them in utils?
+    #TODO Make it easier to scroll through list (a-z selection?)
+    #TODO Set pages to automatically refresh

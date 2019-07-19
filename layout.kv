@@ -36,7 +36,7 @@
 <-SelectableButton>:
     state_image: self.background_normal if self.state == 'normal' else self.background_down
 	disabled_image: self.background_disabled_normal if self.state == 'normal' else self.background_disabled_down
-	_scale: 1. if self.texture_size[0] < self.width else float(self.width) / self.texture_size[0]
+	_scale: 1. if self.texture_size[0] < self.width else float(self.width - 10) / self.texture_size[0]
 	orientation: 'horizontal'
     # Draw a background to indicate selection
     canvas.before:
@@ -67,17 +67,42 @@
     size_hint: None, None
     size: 400, 400
 
+    GridLayout:
+        orientation: 'horizontal'
+        cols: 1
+        rows: 2
+        spacing: 10
+        padding: 10
 
-    BoxLayout:
-        orientation: 'vertical'
-        Label:
-            id: lbl
-            text: root.obj_text
-        Button:
-            size_hint: 1, 0.2
-            text: 'OK'
-            on_press:
-                root.dismiss()
+        GridLayout:
+            orientation: 'horizontal'
+            cols: 1
+            rows: 1
+            spacing: 10
+            padding: 10
+            size_hint_y: 85
+
+            Label:
+                id: lbl
+                text: root.obj_text
+                size_hint_y: None
+                text_size: self.width, None
+                height: self.texture_size[1]
+
+        GridLayout:
+            orientation: 'horizontal'
+            cols: 1
+            rows: 1
+            spacing: 10
+            padding: 10
+            size_hint_y: 15
+
+            Button:
+                orientation: 'vertical'
+                size_hint: .2, .2
+                text: 'OK'
+                on_press:
+                    root.dismiss()
 
 WindowManager:
     transition: NoTransition()
@@ -235,7 +260,10 @@ WindowManager:
                 id: reset
                 text: "Reset Dictionaries"
                 pos_hint: {'top': .85, 'center_x': .5}
-                on_press: root.reset_databases()
+                on_press:
+                    root.reset_databases()
+                    root.display_database()
+
 
 
 <ReadWords>:
