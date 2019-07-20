@@ -264,10 +264,74 @@ WindowManager:
                     root.reset_databases()
                     root.display_database()
 
-
-
 <ReadWords>:
     name: "read"
+    #read_table: read_table
+    BoxLayout:
+        spacing: 10
+        padding: 10
+        orientation: "vertical"
+        rows: 4
+        cols: 1
+
+        GridLayout:
+            cols: 4
+            rows: 1
+            spacing: 0
+            size_hint_y: 5
+
+            ScaleButton:
+                id: page1
+                text: "Page 1"
+                on_release:
+                    app.root.current = "word"
+
+            ScaleButton:
+                id: page2
+                text: "Page 2"
+                on_release:
+                    app.root.current = "unread"
+                    root.manager.get_screen('unread').display_database()
+
+            ScaleButton:
+                id: page3
+                text: "Page 3"
+                on_release:
+                    app.root.current = "read"
+
+            ScaleButton:
+                id: page4
+                text: "Page 4"
+                on_release:
+                    app.root.current = "favorites"
+
+        GridLayout:
+            cols: 4
+            rows: 1
+            spacing: 0
+            size_hint_y: 5
+
+            ScaleLabel:
+                text: "Read Words"
+                size_hint_y: 5
+
+        GridLayout:
+            cols: 4
+            rows: 1
+            spacing: 0
+            size_hint_y: 90
+
+<Favorites>:
+    name: "favorites"
+    #favorites_table: favorites_table
+
+    BoxLayout:
+        spacing: 10
+        padding: 10
+        orientation: "vertical"
+        rows: 4
+        cols: 1
+
     BoxLayout:
         spacing: 10
         padding: 10
@@ -310,62 +374,15 @@ WindowManager:
             cols: 4
             rows: 1
             spacing: 0
-            size_hint_y: 30
-
-        GridLayout:
-            cols: 4
-            rows: 1
-            spacing: 0
-            size_hint_y: 65
-
-<Favorites>:
-    name: "favorites"
-    BoxLayout:
-        spacing: 10
-        padding: 10
-        orientation: "vertical"
-        rows: 3
-        cols: 1
-
-        GridLayout:
-            cols: 4
-            rows: 1
-            spacing: 0
             size_hint_y: 5
 
-            ScaleButton:
-                id: page1
-                text: "Page 1"
-                on_release:
-                    app.root.current = "word"
-
-            ScaleButton:
-                id: page2
-                text: "Page 2"
-                on_release:
-                    app.root.current = "unread"
-
-            ScaleButton:
-                id: page3
-                text: "Page 3"
-                on_release:
-                    app.root.current = "read"
-
-            ScaleButton:
-                id: page4
-                text: "Page 4"
-                on_release:
-                    app.root.current = "favorites"
+            ScaleLabel:
+                text: "Favorites"
+                size_hint_y: 5
 
         GridLayout:
             cols: 4
             rows: 1
             spacing: 0
-            size_hint_y: 30
-
-        GridLayout:
-            cols: 4
-            rows: 1
-            spacing: 0
-            size_hint_y: 65
+            size_hint_y: 90
 

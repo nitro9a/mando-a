@@ -71,10 +71,6 @@ class RV(RecycleView):
     def __init__(self, **kwargs):
         super(RV, self).__init__(**kwargs)
 
-
-class ReadWords(Screen):
-    pass
-
 class Favorites(Screen):
     pass
 
@@ -225,8 +221,8 @@ class UnreadWords(Screen):
 
         self.ids.dat.data = [{'text': key} for key in self.unread_dict.keys()]
 
-
-
+class ReadWords(Screen):
+    pass
 
 kv = Builder.load_file("layout.kv")
 
@@ -252,8 +248,9 @@ if __name__=="__main__":
     #TODO See if RV can be combined with scale button - FINISHED
     #TODO Add Message Pop-up to RV Buttons - FINISHED
     #TODO Add Mandoa word to button, add word, pronunciation, and English to pop-up - FINISHED
+    #TODO Make immediate refresh after calling reset_databases - FINISHED
     #TODO Figure out why the scrolling db in recycleview starts lower than area -FINISHED- and can be pushed further
-    #TODO Page 2
+    #TODO Page 2 - FINISHED
     #TODO Page 3
     #TODO Page 4
     #TODO Add ability to favorite
@@ -264,7 +261,6 @@ if __name__=="__main__":
     #TODO Make pretty
     #TODO Add touch events
     #TODO Add Search
-    #TODO Make immediate refresh after calling reset_databases
     #TODO Find if there is a way to stop other py files from loading automatically - maybe putting them in utils?
     #TODO Make it easier to scroll through list (a-z selection?)
     #TODO Set pages to automatically refresh
