@@ -24,6 +24,63 @@ yellow = (.9, .8, 0, 1)
 red = (.9, .3, 0, 1)
 orange = (.9, .5, 0, 1)
 
+def reset_dbs(self):
+
+    def create_database(csv_file, database, execute_create, execute_insert):
+        f = open(csv_file,'r')
+        next(f, None)
+        reader = csv.reader(f)
+
+        sql = sqlite3.connect(database)
+        cursor = sql.cursor()
+        cursor.execute(execute_create)
+
+        for row in reader:
+            cursor.execute(execute_insert, row)
+
+        f.close()
+        sql.commit()
+        sql.close()
+
+    def delete_database_all(database):
+        sql = sqlite3.connect(database)
+        cursor = sql.cursor()
+        cursor.execute("DROP TABLE Mando_a")
+
+    def delete_database_unread(database):
+        sql = sqlite3.connect(database)
+        cursor = sql.cursor()
+        cursor.execute("DROP TABLE Mando_a")
+
+    def delete_database_read(database):
+        sql = sqlite3.connect(database)
+        cursor = sql.cursor()
+        cursor.execute("DROP TABLE Mando_a")
+
+    delete_database_all('mando-a_all.db')
+    delete_database_unread('mando-a_unread.db')
+    delete_database_read('mando-a_read.db')
+
+    create_database('mando-a-short.csv', 'mando-a_all.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
+    (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
+
+    create_database('mando-a-short.csv', 'mando-a_unread.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
+    (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
+
+    create_database('mando-a-short.csv', 'mando-a_read.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
+    (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
+
+def display_dbs(self, database):
+    con = sqlite3.connect(database)
+    cursor = con.cursor()
+    cursor.execute("SELECT Mandoa, Pronunciation, English from Mando_a")
+    self.rows = cursor.fetchall()
+    self.unread_dict.clear()
+
+    for row in self.rows:
+        self.unread_dict[row[0]] = [row[0], row[1], row[2]]
+        self.ids.dat.data = [{'text': key} for key in self.unread_dict.keys()]
+
 class MessageBox(Popup):
     def popup_dismiss(self):
         self.dismiss()
@@ -163,63 +220,11 @@ class UnreadWords(Screen):
         super(UnreadWords, self).__init__(**kwargs)
         self.unread_dict = {}
 
-    def reset_databases(self):
-
-        def create_database(csv_file, database, execute_create, execute_insert):
-            f = open(csv_file,'r')
-            next(f, None)
-            reader = csv.reader(f)
-
-            sql = sqlite3.connect(database)
-            cursor = sql.cursor()
-            cursor.execute(execute_create)
-
-            for row in reader:
-                cursor.execute(execute_insert, row)
-
-            f.close()
-            sql.commit()
-            sql.close()
-
-        def delete_database_all(database):
-            sql = sqlite3.connect(database)
-            cursor = sql.cursor()
-            cursor.execute("DROP TABLE Mando_a")
-
-        def delete_database_unread(database):
-            sql = sqlite3.connect(database)
-            cursor = sql.cursor()
-            cursor.execute("DROP TABLE Mando_a")
-
-        def delete_database_read(database):
-            sql = sqlite3.connect(database)
-            cursor = sql.cursor()
-            cursor.execute("DROP TABLE Mando_a")
-
-        delete_database_all('mando-a_all.db')
-        delete_database_unread('mando-a_unread.db')
-        delete_database_read('mando-a_read.db')
-
-        create_database('mando-a-short.csv', 'mando-a_all.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
-        (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
-
-        create_database('mando-a-short.csv', 'mando-a_unread.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
-        (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
-
-        create_database('mando-a-short.csv', 'mando-a_read.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
-        (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
-
     def display_database(self):
-        con = sqlite3.connect('mando-a_unread.db')
-        cursor = con.cursor()
-        cursor.execute("SELECT Mandoa, Pronunciation, English from Mando_a")
-        self.rows = cursor.fetchall()
-        self.unread_dict.clear()
+        display_dbs(self, 'mando-a_unread.db')
 
-        for row in self.rows:
-            self.unread_dict[row[0]] = [row[0], row[1], row[2]]
-
-        self.ids.dat.data = [{'text': key} for key in self.unread_dict.keys()]
+    def reset_databases(self):
+        reset_dbs(self)
 
 class ReadWords(Screen):
     pass
