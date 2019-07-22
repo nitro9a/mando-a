@@ -40,5 +40,5 @@ create_database('mando-a-short.csv', 'mando-a_all.db', '''CREATE TABLE IF NOT EX
 create_database('mando-a-short.csv', 'mando-a_unread.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
     (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
 
-create_database('mando-a-short.csv', 'mando-a_read.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
+create_database('mando-a_read.csv', 'mando-a_read.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
     (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")

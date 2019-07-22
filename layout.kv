@@ -104,6 +104,50 @@
                 on_press:
                     root.dismiss()
 
+<MessageBoxRead>:
+    name: 'mbox'
+    lbl: lbl
+    title: ''
+    size_hint: None, None
+    size: 400, 400
+
+    GridLayout:
+        orientation: 'horizontal'
+        cols: 1
+        rows: 2
+        spacing: 10
+        padding: 10
+
+        GridLayout:
+            orientation: 'horizontal'
+            cols: 1
+            rows: 1
+            spacing: 10
+            padding: 10
+            size_hint_y: 85
+
+            Label:
+                id: lbl
+                text: root.obj_text
+                size_hint_y: None
+                text_size: self.width, None
+                height: self.texture_size[1]
+
+        GridLayout:
+            orientation: 'horizontal'
+            cols: 1
+            rows: 1
+            spacing: 10
+            padding: 10
+            size_hint_y: 15
+
+            Button:
+                orientation: 'vertical'
+                size_hint: .2, .2
+                text: 'OK'
+                on_press:
+                    root.dismiss()
+
 WindowManager:
     transition: NoTransition()
     WordADay:
@@ -148,6 +192,7 @@ WindowManager:
                 text: "Page 3"
                 on_release:
                     app.root.current = "read"
+                    root.manager.get_screen('read').display_database()
 
             ScaleButton:
                 id: page4
@@ -220,6 +265,7 @@ WindowManager:
                 text: "Page 3"
                 on_release:
                     app.root.current = "read"
+                    root.manager.get_screen('read').display_database()
 
             ScaleButton:
                 id: page4
@@ -246,7 +292,7 @@ WindowManager:
                 id: unread_table
                 RV:
                     id: dat
-                    viewclass: 'SelectableButton'
+                    viewclass: 'SelectableButtonUnread'
                     size_hint_y: 1
                     font_size: self.height * 0.5
 
@@ -266,7 +312,9 @@ WindowManager:
 
 <ReadWords>:
     name: "read"
+    reset: reset
     #read_table: read_table
+
     BoxLayout:
         spacing: 10
         padding: 10
@@ -298,13 +346,13 @@ WindowManager:
                 text: "Page 3"
                 on_release:
                     app.root.current = "read"
+                    root.display_database()
 
             ScaleButton:
                 id: page4
                 text: "Page 4"
                 on_release:
                     app.root.current = "favorites"
-
         GridLayout:
             cols: 4
             rows: 1
@@ -316,10 +364,32 @@ WindowManager:
                 size_hint_y: 5
 
         GridLayout:
-            cols: 4
+            cols: 1
             rows: 1
             spacing: 0
-            size_hint_y: 90
+            size_hint_y: 80
+
+            BoxLayout:
+                id: unread_table
+                RV:
+                    id: dat
+                    viewclass: 'SelectableButtonRead'
+                    size_hint_y: 1
+                    font_size: self.height * 0.5
+
+        GridLayout:
+            cols: 2
+            rows: 1
+            spacing: 0
+            size_hint_y: 10
+
+            ScaleButton:
+                id: reset
+                text: "Reset Dictionaries"
+                pos_hint: {'top': .85, 'center_x': .5}
+                on_press:
+                    root.reset_databases()
+                    root.display_database()
 
 <Favorites>:
     name: "favorites"
@@ -363,6 +433,7 @@ WindowManager:
                 text: "Page 3"
                 on_release:
                     app.root.current = "read"
+                    root.manager.get_screen('read').display_database()
 
             ScaleButton:
                 id: page4

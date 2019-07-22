@@ -67,19 +67,8 @@ def reset_dbs(self):
     create_database('mando-a-short.csv', 'mando-a_unread.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
     (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
 
-    create_database('mando-a-short.csv', 'mando-a_read.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
+    create_database('mando-a_read.csv', 'mando-a_read.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
     (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
-
-def display_dbs(self, database):
-    con = sqlite3.connect(database)
-    cursor = con.cursor()
-    cursor.execute("SELECT Mandoa, Pronunciation, English from Mando_a")
-    self.rows = cursor.fetchall()
-    self.unread_dict.clear()
-
-    for row in self.rows:
-        self.unread_dict[row[0]] = [row[0], row[1], row[2]]
-        self.ids.dat.data = [{'text': key} for key in self.unread_dict.keys()]
 
 class MessageBox(Popup):
     def popup_dismiss(self):
@@ -95,6 +84,22 @@ class MessageBox(Popup):
         # set the Popup text to the pronunciation and translation
         # from the unread_dict
         word_data = kv.get_screen('unread').unread_dict[obj.text]
+        self.obj_text = word_data[0] + '\n' + word_data[1] + '\n' + word_data[2]
+
+class MessageBoxRead(Popup):
+    def popup_dismiss(self):
+        self.dismiss()
+
+    obj = ObjectProperty(None)
+    obj_text = StringProperty('')
+
+    def __init__(self, obj, **kwargs):
+        super(MessageBoxRead, self).__init__(**kwargs)
+        self.obj = obj
+
+        # set the Popup text to the pronunciation and translation
+        # from the unread_dict
+        word_data = kv.get_screen('read').read_dict[obj.text]
         self.obj_text = word_data[0] + '\n' + word_data[1] + '\n' + word_data[2]
 
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior, RecycleBoxLayout):
@@ -116,12 +121,18 @@ class SelectableButton(RecycleDataViewBehavior, Button):
     def apply_selection(self, rv, index, is_selected):
         self.selected = is_selected
 
+    def update_changes(self, txt):
+        self.text = txt
+
+class SelectableButtonUnread(SelectableButton):
     def on_press(self):
         popup = MessageBox(self)
         popup.open()
 
-    def update_changes(self, txt):
-        self.text = txt
+class SelectableButtonRead(SelectableButton):
+    def on_press(self):
+        popup = MessageBoxRead(self)
+        popup.open()
 
 class RV(RecycleView):
     #data_items = ListProperty([])
@@ -221,13 +232,48 @@ class UnreadWords(Screen):
         self.unread_dict = {}
 
     def display_database(self):
-        display_dbs(self, 'mando-a_unread.db')
+        con = sqlite3.connect('mando-a_unread.db')
+        cursor = con.cursor()
+        cursor.execute("SELECT Mandoa, Pronunciation, English from Mando_a")
+        self.rows = cursor.fetchall()
+        self.unread_dict.clear()
+        ReadWords.read_dict.clear()
+
+        for row in self.rows:
+            self.unread_dict[row[0]] = [row[0], row[1], row[2]]
+
+        self.ids.dat.data = [{'text': key} for key in self.unread_dict.keys()]
 
     def reset_databases(self):
         reset_dbs(self)
 
 class ReadWords(Screen):
-    pass
+
+    read_dict = {}
+
+    read_table = ObjectProperty(None)
+    reset = ObjectProperty(None)
+    rows = ListProperty([("Mandoa", "Pronunciation", "English")])
+
+    def __init__(self, **kwargs):
+        super(ReadWords, self).__init__(**kwargs)
+        self.read_dict = {}
+
+    def display_database(self):
+        con = sqlite3.connect('mando-a_read.db')
+        cursor = con.cursor()
+        cursor.execute("SELECT Mandoa, Pronunciation, English from Mando_a")
+        self.rows = cursor.fetchall()
+        self.read_dict.clear()
+        UnreadWords.unread_dict.clear()
+
+        for row in self.rows:
+            self.read_dict[row[0]] = [row[0], row[1], row[2]]
+
+        self.ids.dat.data = [{'text': key} for key in self.read_dict.keys()]
+
+    def reset_databases(self):
+        reset_dbs(self)
 
 kv = Builder.load_file("layout.kv")
 
