@@ -22,7 +22,6 @@ def remove_word(database, Mandoa):
         cursor = connection.cursor()
         cursor.execute('DELETE FROM Mando_a WHERE Mandoa=?', (str(Mandoa),))
 
-
 def add_word(database, Mandoa, Pronunciation, English, Read):
     with DatabaseConnection(database) as connection:
         cursor = connection.cursor()

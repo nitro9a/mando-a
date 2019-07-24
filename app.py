@@ -96,12 +96,15 @@ class MessageBox(Popup):
 
         con = sqlite3.connect('mando-a_favorites.db')
         cursor = con.cursor()
-        cursor.execute("SELECT * from Mando_a")
-        rowcount = len(cursor.fetchall())
+        w = self.obj_text_list[0]
+        cursor.execute("SELECT Mandoa from Mando_a WHERE Mandoa=?", (w,))
+        entry = cursor.fetchone()
 
-        print ('list', self.obj_text_list)
+        if w in str(entry):
+            pass
+        else:
+            database.add_word('mando-a_favorites.db', self.obj_text_list[0], self.obj_text_list[1], self.obj_text_list[2], Read=1)
 
-        database.add_word('mando-a_favorites.db', self.obj_text_list[0], self.obj_text_list[1], self.obj_text_list[2], Read=1)
         self.obj_text_list.clear()
 
 
@@ -165,9 +168,6 @@ class RV(RecycleView):
     #data_items = ListProperty([])
     def __init__(self, **kwargs):
         super(RV, self).__init__(**kwargs)
-
-class Favorites(Screen):
-    pass
 
 class WindowManager(ScreenManager):
     pass
@@ -302,6 +302,9 @@ class ReadWords(Screen):
 
     def reset_databases(self):
         reset_dbs(self)
+
+class Favorites(Screen):
+    pass
 
 kv = Builder.load_file("layout.kv")
 
