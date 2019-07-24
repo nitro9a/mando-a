@@ -71,6 +71,9 @@ def reset_dbs(self):
     (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
 
 class MessageBox(Popup):
+
+    obj_text_list = []
+
     def popup_dismiss(self):
         self.dismiss()
 
@@ -78,6 +81,7 @@ class MessageBox(Popup):
     obj_text = StringProperty('')
 
     def __init__(self, obj, **kwargs):
+        global obj_text_list
         super(MessageBox, self).__init__(**kwargs)
         self.obj = obj
 
@@ -85,6 +89,29 @@ class MessageBox(Popup):
         # from the unread_dict
         word_data = kv.get_screen('unread').unread_dict[obj.text]
         self.obj_text = word_data[0] + '\n' + word_data[1] + '\n' + word_data[2]
+
+        self.obj_text_list.extend([word_data[0], word_data[1], word_data[2]])
+
+    def add_to_favorites(self):
+
+        con = sqlite3.connect('mando-a_favorites.db')
+        cursor = con.cursor()
+        cursor.execute("SELECT * from Mando_a")
+        rowcount = len(cursor.fetchall())
+
+        print ('list', self.obj_text_list)
+
+        database.add_word('mando-a_favorites.db', self.obj_text_list[0], self.obj_text_list[1], self.obj_text_list[2], Read=1)
+        self.obj_text_list.clear()
+
+
+    def checkbox_click(self, instance, value):
+        if value is True:
+            self.add_to_favorites()
+            print("Checkbox Checked")
+            #print("Checkbox Checked", self.obj_text)
+        else:
+            print("Checkbox Unchecked")
 
 class MessageBoxRead(Popup):
     def popup_dismiss(self):
@@ -188,6 +215,7 @@ class WordADay(Screen):
             try:
                 #get a row from word_dict
                 random_w = random.choice(self.word_dict)
+                print(random_w)
 
                 #random_w is the entire dictionary entry - I need to access just the 'Word' portion
                 word = (str(random_w['Word']))
@@ -315,3 +343,7 @@ if __name__=="__main__":
     #TODO Find if there is a way to stop other py files from loading automatically - maybe putting them in utils?
     #TODO Make it easier to scroll through list (a-z selection?)
     #TODO Set pages to automatically refresh
+    #TODO Check if favorite exists before adding it to db
+    #TODO Add ability to favorite from page 1 and page 2
+    #TODO Add ability to clear favorites
+
