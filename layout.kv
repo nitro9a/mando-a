@@ -1,8 +1,14 @@
 #: import NoTransition kivy.uix.screenmanager.NoTransition
 
+#: set white (1, 1, 1, 1)
+#: set black (0, 0, 0, 0)
+#: set yellow (.9, .8, 0, 1)
+#: set red (.9, .3, 0, 1)
+#: set orange (.9, .5, 0, 1)
+
 <ScaleButton>:
     size_hint: .2, .05
-    color: (0/255., 0/255., 0/255., 1)
+    color: white
     background_normal: ''
     background_color: (155/255., 155/255., 155/255., 1)
     allow_stretch: False
@@ -132,7 +138,7 @@
     GridLayout:
         orientation: 'horizontal'
         cols: 1
-        rows: 2
+        rows: 3
         spacing: 10
         padding: 10
 
@@ -142,7 +148,7 @@
             rows: 1
             spacing: 10
             padding: 10
-            size_hint_y: 85
+            size_hint_y: 75
 
             Label:
                 id: lbl
@@ -150,6 +156,86 @@
                 size_hint_y: None
                 text_size: self.width, None
                 height: self.texture_size[1]
+
+        GridLayout:
+            orientation: 'horizontal'
+            cols: 2
+            rows: 1
+            spacing: 10
+            padding: 10
+            size_hint_y: 10
+
+            Label:
+                id: lbl
+                text: "  Add to Favorites?"
+                size_hint_y: None
+                text_size: self.width, None
+                height: self.texture_size[1]
+            CheckBox:
+                id: check
+                on_active: root.checkbox_click(self, self.active)
+
+        GridLayout:
+            orientation: 'horizontal'
+            cols: 1
+            rows: 1
+            spacing: 10
+            padding: 10
+            size_hint_y: 15
+
+            Button:
+                orientation: 'vertical'
+                size_hint: .2, .2
+                text: 'OK'
+                on_press:
+                    root.dismiss()
+
+<MessageBoxFavorites>:
+    name: 'mbox'
+    lbl: lbl
+    title: ''
+    size_hint: None, None
+    size: 400, 400
+
+    GridLayout:
+        orientation: 'horizontal'
+        cols: 1
+        rows: 3
+        spacing: 10
+        padding: 10
+
+        GridLayout:
+            orientation: 'horizontal'
+            cols: 1
+            rows: 1
+            spacing: 10
+            padding: 10
+            size_hint_y: 75
+
+            Label:
+                id: lbl
+                text: root.obj_text
+                size_hint_y: None
+                text_size: self.width, None
+                height: self.texture_size[1]
+
+        GridLayout:
+            orientation: 'horizontal'
+            cols: 2
+            rows: 1
+            spacing: 10
+            padding: 10
+            size_hint_y: 10
+
+            Label:
+                id: lbl
+                text: "  Remove from Favorites?"
+                size_hint_y: None
+                text_size: self.width, None
+                height: self.texture_size[1]
+            CheckBox:
+                id: check
+                on_active: root.checkbox_click(self, self.active)
 
         GridLayout:
             orientation: 'horizontal'
@@ -217,6 +303,7 @@ WindowManager:
                 text: "Page 4"
                 on_release:
                     app.root.current = "favorites"
+                    root.manager.get_screen('favorites').display_database()
 
         GridLayout:
             cols: 1
@@ -290,6 +377,8 @@ WindowManager:
                 text: "Page 4"
                 on_release:
                     app.root.current = "favorites"
+                    root.manager.get_screen('favorites').display_database()
+
         GridLayout:
             cols: 4
             rows: 1
@@ -331,7 +420,7 @@ WindowManager:
 <ReadWords>:
     name: "read"
     reset: reset
-    #read_table: read_table
+    read_table: read_table
 
     BoxLayout:
         spacing: 10
@@ -371,6 +460,8 @@ WindowManager:
                 text: "Page 4"
                 on_release:
                     app.root.current = "favorites"
+                    root.manager.get_screen('favorites').display_database()
+
         GridLayout:
             cols: 4
             rows: 1
@@ -388,7 +479,7 @@ WindowManager:
             size_hint_y: 80
 
             BoxLayout:
-                id: unread_table
+                id: read_table
                 RV:
                     id: dat
                     viewclass: 'SelectableButtonRead'
@@ -411,7 +502,7 @@ WindowManager:
 
 <Favorites>:
     name: "favorites"
-    #favorites_table: favorites_table
+    favorites_table: favorites_table
 
     BoxLayout:
         spacing: 10
@@ -424,7 +515,7 @@ WindowManager:
         spacing: 10
         padding: 10
         orientation: "vertical"
-        rows: 3
+        rows: 4
         cols: 1
 
         GridLayout:
@@ -458,6 +549,7 @@ WindowManager:
                 text: "Page 4"
                 on_release:
                     app.root.current = "favorites"
+                    root.display_database()
 
         GridLayout:
             cols: 4
@@ -470,8 +562,30 @@ WindowManager:
                 size_hint_y: 5
 
         GridLayout:
-            cols: 4
+            cols: 1
             rows: 1
             spacing: 0
-            size_hint_y: 90
+            size_hint_y: 80
+
+            BoxLayout:
+                id: favorites_table
+                RV:
+                    id: dat
+                    viewclass: 'SelectableButtonFavorites'
+                    size_hint_y: 1
+                    font_size: self.height * 0.5
+
+        GridLayout:
+            cols: 2
+            rows: 1
+            spacing: 0
+            size_hint_y: 10
+
+            ScaleButton:
+                id: reset
+                text: "Reset Favorites"
+                pos_hint: {'top': .85, 'center_x': .5}
+                #on_press:
+                    #root.reset_databases()
+                    #root.display_database()
 

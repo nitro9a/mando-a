@@ -18,12 +18,6 @@ from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
 from kivy.properties import ObjectProperty, ListProperty, StringProperty, BooleanProperty
 
-white = (1,1,1,1)
-black = (0,0,0,0)
-yellow = (.9, .8, 0, 1)
-red = (.9, .3, 0, 1)
-orange = (.9, .5, 0, 1)
-
 def reset_dbs(self):
 
     def create_database(csv_file, database, execute_create, execute_insert):
@@ -111,10 +105,8 @@ class MessageBox(Popup):
     def checkbox_click(self, instance, value):
         if value is True:
             self.add_to_favorites()
-            print("Checkbox Checked")
-            #print("Checkbox Checked", self.obj_text)
         else:
-            print("Checkbox Unchecked")
+            pass
 
 class MessageBoxRead(Popup):
     def popup_dismiss(self):
@@ -132,6 +124,22 @@ class MessageBoxRead(Popup):
         word_data = kv.get_screen('read').read_dict[obj.text]
         self.obj_text = word_data[0] + '\n' + word_data[1] + '\n' + word_data[2]
 
+class MessageBoxFavorites(Popup):
+    def popup_dismiss(self):
+        self.dismiss()
+
+    obj = ObjectProperty(None)
+    obj_text = StringProperty('')
+
+    def __init__(self, obj, **kwargs):
+        super(MessageBoxFavorites, self).__init__(**kwargs)
+        self.obj = obj
+
+        # set the Popup text to the pronunciation and translation
+        # from the unread_dict
+        word_data = kv.get_screen('favorites').favorites_dict[obj.text]
+        self.obj_text = word_data[0] + '\n' + word_data[1] + '\n' + word_data[2]
+
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior, RecycleBoxLayout):
     """ Adds selection and focus behaviour to the view. """
 
@@ -144,8 +152,6 @@ class SelectableButton(RecycleDataViewBehavior, Button):
     def refresh_view_attrs(self, rv, index, data):
         """ Catch and handle the view changes """
         self.index = index
-        #print(type(data))
-        #print(f'Data: {data.items()}, Index: {index},rv: {rv}, Type: {type(data)}')
         return super(SelectableButton, self).refresh_view_attrs(rv, index, data)
 
     def apply_selection(self, rv, index, is_selected):
@@ -164,8 +170,12 @@ class SelectableButtonRead(SelectableButton):
         popup = MessageBoxRead(self)
         popup.open()
 
+class SelectableButtonFavorites(SelectableButton):
+    def on_press(self):
+        popup = MessageBoxFavorites(self)
+        popup.open()
+
 class RV(RecycleView):
-    #data_items = ListProperty([])
     def __init__(self, **kwargs):
         super(RV, self).__init__(**kwargs)
 
@@ -266,6 +276,7 @@ class UnreadWords(Screen):
         self.rows = cursor.fetchall()
         self.unread_dict.clear()
         ReadWords.read_dict.clear()
+        Favorites.favorites_dict.clear()
 
         for row in self.rows:
             self.unread_dict[row[0]] = [row[0], row[1], row[2]]
@@ -294,6 +305,7 @@ class ReadWords(Screen):
         self.rows = cursor.fetchall()
         self.read_dict.clear()
         UnreadWords.unread_dict.clear()
+        Favorites.favorites_dict.clear()
 
         for row in self.rows:
             self.read_dict[row[0]] = [row[0], row[1], row[2]]
@@ -304,7 +316,33 @@ class ReadWords(Screen):
         reset_dbs(self)
 
 class Favorites(Screen):
-    pass
+
+    favorites_dict = {}
+
+    favorites_table = ObjectProperty(None)
+    reset = ObjectProperty(None)
+    rows = ListProperty([("Mandoa", "Pronunciation", "English")])
+
+    def __init__(self, **kwargs):
+        super(Favorites, self).__init__(**kwargs)
+        self.favorites_dict = {}
+
+    def display_database(self):
+        con = sqlite3.connect('mando-a_favorites.db')
+        cursor = con.cursor()
+        cursor.execute("SELECT Mandoa, Pronunciation, English from Mando_a")
+        self.rows = cursor.fetchall()
+        self.favorites_dict.clear()
+        UnreadWords.unread_dict.clear()
+        ReadWords.read_dict.clear()
+
+        for row in self.rows:
+            self.favorites_dict[row[0]] = [row[0], row[1], row[2]]
+
+        self.ids.dat.data = [{'text': key} for key in self.favorites_dict.keys()]
+    print (favorites_dict)
+    def reset_databases(self):
+        reset_dbs(self)
 
 kv = Builder.load_file("layout.kv")
 
@@ -349,4 +387,5 @@ if __name__=="__main__":
     #TODO Check if favorite exists before adding it to db
     #TODO Add ability to favorite from page 1 and page 2
     #TODO Add ability to clear favorites
+    #TODO Set colors as variables
 
