@@ -61,7 +61,7 @@ def reset_dbs(self):
     create_database('mando-a-short.csv', 'mando-a_unread.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
     (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
 
-    create_database('mando-a_read.csv', 'mando-a_read.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
+    create_database('mando-a_read.csv', 'mando-a_read.db', '''CREATE TABLE IF NOT EXISTS Mando_a
     (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
 
 class MessageBox(Popup):
@@ -101,7 +101,6 @@ class MessageBox(Popup):
 
         self.obj_text_list.clear()
 
-
     def checkbox_click(self, instance, value):
         if value is True:
             self.add_to_favorites()
@@ -109,6 +108,9 @@ class MessageBox(Popup):
             pass
 
 class MessageBoxRead(Popup):
+
+    obj_text_list = []
+
     def popup_dismiss(self):
         self.dismiss()
 
@@ -116,6 +118,7 @@ class MessageBoxRead(Popup):
     obj_text = StringProperty('')
 
     def __init__(self, obj, **kwargs):
+        global obj_text_list
         super(MessageBoxRead, self).__init__(**kwargs)
         self.obj = obj
 
@@ -124,7 +127,31 @@ class MessageBoxRead(Popup):
         word_data = kv.get_screen('read').read_dict[obj.text]
         self.obj_text = word_data[0] + '\n' + word_data[1] + '\n' + word_data[2]
 
+        self.obj_text_list.extend([word_data[0], word_data[1], word_data[2]])
+
+    def add_to_favorites(self):
+
+        con = sqlite3.connect('mando-a_favorites.db')
+        cursor = con.cursor()
+        w = self.obj_text_list[0]
+        cursor.execute("SELECT Mandoa from Mando_a WHERE Mandoa=?", (w,))
+        entry = cursor.fetchone()
+
+        if w in str(entry):
+            pass
+        else:
+            database.add_word('mando-a_favorites.db', self.obj_text_list[0], self.obj_text_list[1], self.obj_text_list[2], Read=1)
+
+        self.obj_text_list.clear()
+
+    def checkbox_click(self, instance, value):
+        if value is True:
+            self.add_to_favorites()
+        else:
+            pass
+
 class MessageBoxFavorites(Popup):
+
     def popup_dismiss(self):
         self.dismiss()
 
@@ -340,9 +367,34 @@ class Favorites(Screen):
             self.favorites_dict[row[0]] = [row[0], row[1], row[2]]
 
         self.ids.dat.data = [{'text': key} for key in self.favorites_dict.keys()]
-    print (favorites_dict)
-    def reset_databases(self):
-        reset_dbs(self)
+
+    def reset_favorites(database):
+
+        def delete_favorites(database):
+            sql = sqlite3.connect(database)
+            cursor = sql.cursor()
+            cursor.execute("DROP TABLE Mando_a")
+
+        def create_favorites(csv_file, database, execute_create, execute_insert):
+            f = open(csv_file,'r')
+            next(f, None)
+            reader = csv.reader(f)
+
+            sql = sqlite3.connect(database)
+            cursor = sql.cursor()
+            cursor.execute(execute_create)
+
+            for row in reader:
+                cursor.execute(execute_insert, row)
+
+            f.close()
+            sql.commit()
+            sql.close()
+
+        delete_favorites("mando-a_favorites.db")
+
+        create_favorites('mando-a_favorites.csv', 'mando-a_favorites.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
+        (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
 
 kv = Builder.load_file("layout.kv")
 
@@ -355,37 +407,42 @@ if __name__=="__main__":
 
 
 
-    #TODO look at exercise dice, gen_ex_die, for line in text - figure out text wrapping - FINISHED
-    #TODO Make pages - FINISHED
-    #TODO Create a new list of unread words, 'remove word' from 'unread word' list - FINISHED
-    #TODO Add random word to a 'read words' list - FINISHED
-    #TODO Figure out why program is crashing seemingly randomly on random choice - FINISHED
-    #TODO Add reset - FINISHED
-    #TODO Figure out how to make page navigation buttons uniform even when the rest of the layout is different (it works,
+    # look at exercise dice, gen_ex_die, for line in text - figure out text wrapping - FINISHED
+    # Make pages - FINISHED
+    # Create a new list of unread words, 'remove word' from 'unread word' list - FINISHED
+    # Add random word to a 'read words' list - FINISHED
+    # Figure out why program is crashing seemingly randomly on random choice - FINISHED
+    # Add reset - FINISHED
+    # Figure out how to make page navigation buttons uniform even when the rest of the layout is different (it works,
     # continued... if you use the same amount of layouts no matter their size.  Can probably adjust padding for
     # different number of layouts - FINISHED
-    #TODO Add table with scrolling text results - FINISHED
-    #TODO See if RV can be combined with scale button - FINISHED
-    #TODO Add Message Pop-up to RV Buttons - FINISHED
-    #TODO Add Mandoa word to button, add word, pronunciation, and English to pop-up - FINISHED
-    #TODO Make immediate refresh after calling reset_databases - FINISHED
-    #TODO Figure out why the scrolling db in recycleview starts lower than area -FINISHED- and can be pushed further
-    #TODO Page 2 - FINISHED
+    # Add table with scrolling text results - FINISHED
+    # See if RV can be combined with scale button - FINISHED
+    # Add Message Pop-up to RV Buttons - FINISHED
+    # Add Mandoa word to button, add word, pronunciation, and English to pop-up - FINISHED
+    # Make immediate refresh after calling reset_databases - FINISHED
+    # Page 2 - FINISHED
+    # Add ability to favorite - FINISHED
+    # Check if favorite exists before adding it to db - FINISHED
+    # Set colors as variables - FINISHED
+    # Set pages to automatically refresh - FINISHED
+    # Figure out why the scrolling db in recycleview starts lower than area -FINISHED
+    # Add ability to clear favorites - FINISHED
+
+    #TODO Figure out why the scrolling db in recycleview can be pushed further down and fix it
     #TODO Page 3
     #TODO Page 4
-    #TODO Add ability to favorite
     #TODO Edit database to have only unique entries
     #TODO Add what happens when there are no words left
     #TODO Notifications - Plyer
-    #TODO Limit length of entries?
     #TODO Make pretty
     #TODO Add touch events
     #TODO Add Search
     #TODO Find if there is a way to stop other py files from loading automatically - maybe putting them in utils?
     #TODO Make it easier to scroll through list (a-z selection?)
-    #TODO Set pages to automatically refresh
-    #TODO Check if favorite exists before adding it to db
     #TODO Add ability to favorite from page 1 and page 2
-    #TODO Add ability to clear favorites
-    #TODO Set colors as variables
+    #TODO Add ability to remove favorite individually
+    #TODO Add real database and csv files and change code to utilize them in mando_a.py and app.py
+    #TODO Add checks: "Are you sure you want to..."
+
 

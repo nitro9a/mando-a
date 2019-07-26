@@ -585,7 +585,7 @@ WindowManager:
                 id: reset
                 text: "Reset Favorites"
                 pos_hint: {'top': .85, 'center_x': .5}
-                #on_press:
-                    #root.reset_databases()
-                    #root.display_database()
+                on_press:
+                    root.reset_favorites()
+                    root.display_database()
 
