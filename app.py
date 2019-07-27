@@ -16,7 +16,10 @@ from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
+from kivy.uix.checkbox import CheckBox
 from kivy.properties import ObjectProperty, ListProperty, StringProperty, BooleanProperty
+
+obj_text_list = []
 
 def reset_dbs(self):
 
@@ -64,9 +67,29 @@ def reset_dbs(self):
     create_database('mando-a_read.csv', 'mando-a_read.db', '''CREATE TABLE IF NOT EXISTS Mando_a
     (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
 
+def add_to_faves(self):
+
+        con = sqlite3.connect('mando-a_favorites.db')
+        cursor = con.cursor()
+        try:
+            w = obj_text_list[0]
+            print("OTL:", obj_text_list, type(obj_text_list))
+            cursor.execute("SELECT Mandoa from Mando_a WHERE Mandoa=?", (w,))
+            entry = cursor.fetchone()
+
+            if w in str(entry):
+                pass
+            else:
+                database.add_word('mando-a_favorites.db', obj_text_list[0], obj_text_list[1], obj_text_list[2], Read=1)
+
+            obj_text_list.clear()
+
+        except IndexError:
+            pass
+
 class MessageBox(Popup):
 
-    obj_text_list = []
+
 
     def popup_dismiss(self):
         self.dismiss()
@@ -84,32 +107,20 @@ class MessageBox(Popup):
         word_data = kv.get_screen('unread').unread_dict[obj.text]
         self.obj_text = word_data[0] + '\n' + word_data[1] + '\n' + word_data[2]
 
-        self.obj_text_list.extend([word_data[0], word_data[1], word_data[2]])
+        obj_text_list.extend([word_data[0], word_data[1], word_data[2]])
+        print("OBJ TEXT LIST", obj_text_list)
 
     def add_to_favorites(self):
-
-        con = sqlite3.connect('mando-a_favorites.db')
-        cursor = con.cursor()
-        w = self.obj_text_list[0]
-        cursor.execute("SELECT Mandoa from Mando_a WHERE Mandoa=?", (w,))
-        entry = cursor.fetchone()
-
-        if w in str(entry):
-            pass
-        else:
-            database.add_word('mando-a_favorites.db', self.obj_text_list[0], self.obj_text_list[1], self.obj_text_list[2], Read=1)
-
-        self.obj_text_list.clear()
+        add_to_faves(self)
 
     def checkbox_click(self, instance, value):
         if value is True:
             self.add_to_favorites()
+        # if value is False remove from favorites
         else:
             pass
 
 class MessageBoxRead(Popup):
-
-    obj_text_list = []
 
     def popup_dismiss(self):
         self.dismiss()
@@ -127,26 +138,15 @@ class MessageBoxRead(Popup):
         word_data = kv.get_screen('read').read_dict[obj.text]
         self.obj_text = word_data[0] + '\n' + word_data[1] + '\n' + word_data[2]
 
-        self.obj_text_list.extend([word_data[0], word_data[1], word_data[2]])
+        obj_text_list.extend([word_data[0], word_data[1], word_data[2]])
 
     def add_to_favorites(self):
-
-        con = sqlite3.connect('mando-a_favorites.db')
-        cursor = con.cursor()
-        w = self.obj_text_list[0]
-        cursor.execute("SELECT Mandoa from Mando_a WHERE Mandoa=?", (w,))
-        entry = cursor.fetchone()
-
-        if w in str(entry):
-            pass
-        else:
-            database.add_word('mando-a_favorites.db', self.obj_text_list[0], self.obj_text_list[1], self.obj_text_list[2], Read=1)
-
-        self.obj_text_list.clear()
+        add_to_faves(self)
 
     def checkbox_click(self, instance, value):
         if value is True:
             self.add_to_favorites()
+        # if value is False remove from favorites
         else:
             pass
 
@@ -217,6 +217,7 @@ class WordADay(Screen):
     translation = ObjectProperty(None)
 
     def __init__(self, **kwargs):
+        global obj_text_list
         super(WordADay, self).__init__(**kwargs)
         self.unread_dict = {}
 
@@ -252,16 +253,16 @@ class WordADay(Screen):
             try:
                 #get a row from word_dict
                 random_w = random.choice(self.word_dict)
-                print(random_w)
 
                 #random_w is the entire dictionary entry - I need to access just the 'Word' portion
                 word = (str(random_w['Word']))
                 pro = (str(random_w['Pronunciation']))
                 eng =  (str(random_w['English']))
-                print (str(random_w['Word']))
 
                 text_result = (f'\n\nWord: {str(word)}\nPronunciation: {str(pro)}\nEnglish: {str(eng)}')
-
+                print("OTL:", obj_text_list, type(obj_text_list))
+                obj_text_list.extend([word, pro, eng])
+                print("OTL:", obj_text_list, type(obj_text_list))
                 self.translation.text = text_result
 
                 #mark as read in the all table
@@ -283,6 +284,21 @@ class WordADay(Screen):
             print("finished")
         elif rowcount >= 1:
             get_random_word()
+
+    def add_to_favorites(self):
+        add_to_faves(self)
+
+    def checkbox_click(self, instance, value):
+        if value is True:
+            self.add_to_favorites()
+        # if value is False remove from favorites
+        else:
+            pass
+
+    def reset_checkbox(self):
+        for child in reversed(self.ids.grid.children):
+            if isinstance(child, CheckBox):
+                child.active = False
 
 class UnreadWords(Screen):
 
@@ -439,10 +455,15 @@ if __name__=="__main__":
     #TODO Add touch events
     #TODO Add Search
     #TODO Find if there is a way to stop other py files from loading automatically - maybe putting them in utils?
-    #TODO Make it easier to scroll through list (a-z selection?)
+    #TODO Make it easier to scroll through list (a-z selection?) goto_node(key, last_node, last_node_idx)
+    #https://kivy.org/doc/stable/api-kivy.uix.recycleview.layout.html
     #TODO Add ability to favorite from page 1 and page 2
     #TODO Add ability to remove favorite individually
     #TODO Add real database and csv files and change code to utilize them in mando_a.py and app.py
     #TODO Add checks: "Are you sure you want to..."
-
+    #TODO Set all labels, buttons, and popups to scale (possibly use scatter, once on touch events are added)
+    #TODO Fix clicking on clickbox more than two times causes IndexError: list index out of range
+    #TODO Add behavior for unchecking a favorite check box
+    #TODO Show "add to favorites" on WordADay page only after word is selected
+    #TODO Clear checkboxes so they always are empty after changing word or pages
 

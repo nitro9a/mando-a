@@ -88,7 +88,7 @@
             padding: 10
             size_hint_y: 75
 
-            Label:
+            ScrollableLabel:
                 id: lbl
                 text: root.obj_text
                 size_hint_y: None
@@ -103,7 +103,7 @@
             padding: 10
             size_hint_y: 10
 
-            Label:
+            ScaleLabel:
                 id: lbl
                 text: "  Add to Favorites?"
                 size_hint_y: None
@@ -150,7 +150,7 @@
             padding: 10
             size_hint_y: 75
 
-            Label:
+            ScaleLabel:
                 id: lbl
                 text: root.obj_text
                 size_hint_y: None
@@ -165,7 +165,7 @@
             padding: 10
             size_hint_y: 10
 
-            Label:
+            ScaleLabel:
                 id: lbl
                 text: "  Add to Favorites?"
                 size_hint_y: None
@@ -212,7 +212,7 @@
             padding: 10
             size_hint_y: 75
 
-            Label:
+            ScaleLabel:
                 id: lbl
                 text: root.obj_text
                 size_hint_y: None
@@ -227,7 +227,7 @@
             padding: 10
             size_hint_y: 10
 
-            Label:
+            ScaleLabel:
                 id: lbl
                 text: "  Remove from Favorites?"
                 size_hint_y: None
@@ -264,12 +264,14 @@ WindowManager:
     name: "word"
     get: get
     translation: translation
+    on_leave:
+        pass
 
     BoxLayout:
         spacing: 10
         padding: 10
         orientation: "vertical"
-        rows: 3
+        rows: 4
         cols: 1
 
         GridLayout:
@@ -309,7 +311,7 @@ WindowManager:
             cols: 1
             rows: 1
             spacing: 10
-            size_hint_y: 30
+            size_hint_y: 15
 
             ScaleButton:
                 id: get
@@ -321,7 +323,7 @@ WindowManager:
             cols: 1
             rows: 1
             spacing: 10
-            size_hint_y: 65
+            size_hint_y: 70
 
             ScaleLabel:
                 id: translation
@@ -333,6 +335,34 @@ WindowManager:
                 halign: 'center'
                 text_size: self.size
                 height: self.texture_size[1]
+
+        GridLayout:
+            cols: 1
+            rows: 1
+            spacing: 10
+            size_hint_y: 10
+
+
+            GridLayout:
+                orientation: 'horizontal'
+                cols: 2
+                rows: 1
+                spacing: 10
+                padding: 10
+
+                ScaleLabel:
+                    id: lbl
+                    text: "  Add to Favorites?"
+                    text_size: self.size
+                    valign: 'middle'
+                    halign: 'center'
+
+                CheckBox:
+                    id: check
+                    on_active: root.checkbox_click(self, self.active)
+
+                    valign: 'middle'
+                    halign: 'center'
 
 <UnreadWords>:
     name: "unread"
