@@ -69,27 +69,27 @@ def reset_dbs(self):
 
 def add_to_faves(self):
 
-        con = sqlite3.connect('mando-a_favorites.db')
-        cursor = con.cursor()
-        try:
-            w = obj_text_list[0]
-            print("OTL:", obj_text_list, type(obj_text_list))
-            cursor.execute("SELECT Mandoa from Mando_a WHERE Mandoa=?", (w,))
-            entry = cursor.fetchone()
+    con = sqlite3.connect('mando-a_favorites.db')
+    cursor = con.cursor()
+    try:
+        w = obj_text_list[0]
+        cursor.execute("SELECT Mandoa from Mando_a WHERE Mandoa=?", (w,))
+        entry = cursor.fetchone()
 
-            if w in str(entry):
-                pass
-            else:
-                database.add_word('mando-a_favorites.db', obj_text_list[0], obj_text_list[1], obj_text_list[2], Read=1)
-
-            obj_text_list.clear()
-
-        except IndexError:
+        if w in str(entry):
             pass
+        else:
+            database.add_word('mando-a_favorites.db', obj_text_list[0], obj_text_list[1], obj_text_list[2], Read=1)
+
+        obj_text_list.clear()
+
+    except IndexError:
+        pass
+
+def remove_from_faves(self):
+    pass
 
 class MessageBox(Popup):
-
-
 
     def popup_dismiss(self):
         self.dismiss()
@@ -295,11 +295,6 @@ class WordADay(Screen):
         else:
             pass
 
-    def reset_checkbox(self):
-        for child in reversed(self.ids.grid.children):
-            if isinstance(child, CheckBox):
-                child.active = False
-
 class UnreadWords(Screen):
 
     unread_dict = {}
@@ -421,8 +416,6 @@ class WordApp(App):
 if __name__=="__main__":
     WordApp().run()
 
-
-
     # look at exercise dice, gen_ex_die, for line in text - figure out text wrapping - FINISHED
     # Make pages - FINISHED
     # Create a new list of unread words, 'remove word' from 'unread word' list - FINISHED
@@ -444,6 +437,8 @@ if __name__=="__main__":
     # Set pages to automatically refresh - FINISHED
     # Figure out why the scrolling db in recycleview starts lower than area -FINISHED
     # Add ability to clear favorites - FINISHED
+    # Clear checkboxes so they always are empty after changing word or pages - FINISHED
+    # Add ability to favorite from page 1 and page 2 - FINISHED
 
     #TODO Figure out why the scrolling db in recycleview can be pushed further down and fix it
     #TODO Page 3
@@ -457,7 +452,6 @@ if __name__=="__main__":
     #TODO Find if there is a way to stop other py files from loading automatically - maybe putting them in utils?
     #TODO Make it easier to scroll through list (a-z selection?) goto_node(key, last_node, last_node_idx)
     #https://kivy.org/doc/stable/api-kivy.uix.recycleview.layout.html
-    #TODO Add ability to favorite from page 1 and page 2
     #TODO Add ability to remove favorite individually
     #TODO Add real database and csv files and change code to utilize them in mando_a.py and app.py
     #TODO Add checks: "Are you sure you want to..."
@@ -465,5 +459,6 @@ if __name__=="__main__":
     #TODO Fix clicking on clickbox more than two times causes IndexError: list index out of range
     #TODO Add behavior for unchecking a favorite check box
     #TODO Show "add to favorites" on WordADay page only after word is selected
-    #TODO Clear checkboxes so they always are empty after changing word or pages
+    #TODO Finished and reset dictionaries need to clear add to favorites and WordADay label - will not add to favorites after clear
+
 
