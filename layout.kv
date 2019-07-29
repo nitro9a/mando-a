@@ -336,6 +336,7 @@ WindowManager:
                 id: get
                 text: "Get a Word"
                 pos_hint: {'top': .85, 'center_x': .5}
+                on_press: root.ids.check.active = False
                 on_press: root.random_word()
                 on_press: root.ids.lbl.text = "    Add to favorites?"
                 on_press: root.ids.check.opacity = 1
@@ -468,6 +469,7 @@ WindowManager:
                 on_press:
                     root.reset_databases()
                     root.display_database()
+                    root.manager.get_screen('word').ids.check.active = False
 
 <ReadWords>:
     name: "read"
@@ -551,6 +553,7 @@ WindowManager:
                 on_press:
                     root.reset_databases()
                     root.display_database()
+                    root.manager.get_screen('word').ids.check.active = False
 
 <Favorites>:
     name: "favorites"

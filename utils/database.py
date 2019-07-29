@@ -10,8 +10,6 @@ def access_word_table(database) -> List[Word]:
         words = cursor.fetchall()
     return words
 
-# Can you list if not read?
-
 def mark_as_read(database, Mandoa):
     with DatabaseConnection(database) as connection:
         cursor = connection.cursor()

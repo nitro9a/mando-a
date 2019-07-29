@@ -20,6 +20,7 @@ from kivy.uix.checkbox import CheckBox
 from kivy.properties import ObjectProperty, ListProperty, StringProperty, BooleanProperty
 
 obj_text_list = []
+current_word = "test"
 
 def reset_dbs(self):
 
@@ -68,11 +69,13 @@ def reset_dbs(self):
     (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
 
 def add_to_faves(self):
-
+    print("add: ", obj_text_list)
     con = sqlite3.connect('mando-a_favorites.db')
     cursor = con.cursor()
+    global current_word
     try:
         w = obj_text_list[0]
+        current_word = obj_text_list[0]
         cursor.execute("SELECT Mandoa from Mando_a WHERE Mandoa=?", (w,))
         entry = cursor.fetchone()
 
@@ -87,7 +90,20 @@ def add_to_faves(self):
         pass
 
 def remove_from_faves(self):
-    pass
+    print("remove: ", obj_text_list, current_word)
+    con = sqlite3.connect('mando-a_favorites.db')
+    cursor = con.cursor()
+
+    try:
+        cursor.execute("SELECT Mandoa from Mando_a WHERE Mandoa=?", (current_word,))
+        entry = cursor.fetchone()
+        if current_word not in entry:
+            pass
+        else:
+            database.remove_word('mando-a_favorites.db', current_word)
+
+    except IndexError:
+        pass
 
 class MessageBox(Popup):
 
@@ -112,6 +128,9 @@ class MessageBox(Popup):
 
     def add_to_favorites(self):
         add_to_faves(self)
+
+    def remove_from_favorites(self):
+        remove_from_faves(self)
 
     def checkbox_click(self, instance, value):
         if value is True:
@@ -260,9 +279,7 @@ class WordADay(Screen):
                 eng =  (str(random_w['English']))
 
                 text_result = (f'\n\nWord: {str(word)}\nPronunciation: {str(pro)}\nEnglish: {str(eng)}')
-                print("OTL:", obj_text_list, type(obj_text_list))
                 obj_text_list.extend([word, pro, eng])
-                print("OTL:", obj_text_list, type(obj_text_list))
                 self.translation.text = text_result
 
                 #mark as read in the all table
@@ -288,12 +305,21 @@ class WordADay(Screen):
     def add_to_favorites(self):
         add_to_faves(self)
 
+    def remove_from_favorites(self):
+        remove_from_faves(self)
+
     def checkbox_click(self, instance, value):
         if value is True:
             self.add_to_favorites()
+            print("OTL", obj_text_list)
         # if value is False remove from favorites
+        # value is made false by leaving screen
         else:
-            pass
+            try:
+                self.remove_from_favorites()
+                print("inactive")
+            except TypeError:
+                print("OTL", obj_text_list)
 
 class UnreadWords(Screen):
 
@@ -422,6 +448,7 @@ if __name__=="__main__":
     # Add random word to a 'read words' list - FINISHED
     # Figure out why program is crashing seemingly randomly on random choice - FINISHED
     # Add reset - FINISHED
+
     # Figure out how to make page navigation buttons uniform even when the rest of the layout is different (it works,
     # continued... if you use the same amount of layouts no matter their size.  Can probably adjust padding for
     # different number of layouts - FINISHED
@@ -430,18 +457,21 @@ if __name__=="__main__":
     # Add Message Pop-up to RV Buttons - FINISHED
     # Add Mandoa word to button, add word, pronunciation, and English to pop-up - FINISHED
     # Make immediate refresh after calling reset_databases - FINISHED
+
     # Page 2 - FINISHED
     # Add ability to favorite - FINISHED
     # Check if favorite exists before adding it to db - FINISHED
     # Set colors as variables - FINISHED
     # Set pages to automatically refresh - FINISHED
-    # Figure out why the scrolling db in recycleview starts lower than area -FINISHED
+    # Figure out why the scrolling db in recycleview starts lower than area - FINISHED
+
     # Add ability to clear favorites - FINISHED
     # Clear checkboxes so they always are empty after changing word or pages - FINISHED
     # Add ability to favorite from page 1 and page 2 - FINISHED
+    # Clear CheckBox on "Get a Word" - FINISHED
+    # Page 3 - FINISHED
 
     #TODO Figure out why the scrolling db in recycleview can be pushed further down and fix it
-    #TODO Page 3
     #TODO Page 4
     #TODO Edit database to have only unique entries
     #TODO Add what happens when there are no words left
@@ -459,6 +489,9 @@ if __name__=="__main__":
     #TODO Fix clicking on clickbox more than two times causes IndexError: list index out of range
     #TODO Add behavior for unchecking a favorite check box
     #TODO Show "add to favorites" on WordADay page only after word is selected
-    #TODO Finished and reset dictionaries need to clear add to favorites and WordADay label - will not add to favorites after clear
+    #TODO Finished and reset dictionaries (FINISHED) need to clear WordADay add to favorites checkbox, will not add to favorites after clear
+
+
+
 
 
