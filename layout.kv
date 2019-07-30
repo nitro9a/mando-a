@@ -83,9 +83,11 @@
 <MessageBox>:
     name: 'mbox'
     lbl: lbl
+    btn: btn
     title: ''
     size_hint: None, None
     size: 400, 400
+    on_dismiss: root.clear()
 
     GridLayout:
         orientation: 'horizontal'
@@ -111,22 +113,19 @@
 
         GridLayout:
             orientation: 'horizontal'
-            cols: 2
+            cols: 1
             rows: 1
             spacing: 10
             padding: 10
             size_hint_y: 10
 
-            ScaleLabel:
-                id: lbl
+            ScaleButton:
+                id: btn
                 text: "  Add to Favorites?"
                 size_hint_y: None
                 text_size: self.width, None
                 height: self.texture_size[1]
-            CheckBox:
-                id: check
-                on_active: root.checkbox_click(self, self.active)
-                opacity: 1
+                on_press: root.add_to_favorites()
 
         GridLayout:
             orientation: 'horizontal'
@@ -146,9 +145,11 @@
 <MessageBoxRead>:
     name: 'mbox'
     lbl: lbl
+    btn: btn
     title: ''
     size_hint: None, None
     size: 400, 400
+    on_dismiss: root.clear()
 
     GridLayout:
         orientation: 'horizontal'
@@ -174,22 +175,19 @@
 
         GridLayout:
             orientation: 'horizontal'
-            cols: 2
+            cols: 1
             rows: 1
             spacing: 10
             padding: 10
             size_hint_y: 10
 
-            ScaleLabel:
-                id: lbl
+            ScaleButton:
+                id: btn
                 text: "  Add to Favorites?"
                 size_hint_y: None
                 text_size: self.width, None
                 height: self.texture_size[1]
-            CheckBox:
-                id: check
-                on_active: root.checkbox_click(self, self.active)
-                opacity: 1
+                on_press: root.add_to_favorites()
 
         GridLayout:
             orientation: 'horizontal'
@@ -209,9 +207,11 @@
 <MessageBoxFavorites>:
     name: 'mbox'
     lbl: lbl
+    btn: btn
     title: ''
     size_hint: None, None
     size: 400, 400
+    on_dismiss: root.clear()
 
     GridLayout:
         orientation: 'horizontal'
@@ -237,22 +237,20 @@
 
         GridLayout:
             orientation: 'horizontal'
-            cols: 2
+            cols: 1
             rows: 1
             spacing: 10
             padding: 10
             size_hint_y: 10
 
-            ScaleLabel:
-                id: lbl
+            ScaleButton:
+                id: btn
                 text: "  Remove from Favorites?"
                 size_hint_y: None
                 text_size: self.width, None
                 height: self.texture_size[1]
-            CheckBox:
-                id: check
-                on_active: root.checkbox_click(self, self.active)
-                opacity: 1
+                on_press: root.remove_from_favorites()
+                #####on_press: root.get_screen('favorites').display_database()
 
         GridLayout:
             orientation: 'horizontal'
@@ -283,7 +281,7 @@ WindowManager:
     translation: translation
 
     on_leave:
-        self.ids.check.active = False
+        root.manager.get_screen('favorites').display_database()
         #root.ids.lbl.text = ""
 
     BoxLayout:
@@ -336,11 +334,8 @@ WindowManager:
                 id: get
                 text: "Get a Word"
                 pos_hint: {'top': .85, 'center_x': .5}
-                on_press: root.ids.check.active = False
                 on_press: root.random_word()
                 on_press: root.ids.lbl.text = "    Add to favorites?"
-                on_press: root.ids.check.opacity = 1
-
 
         GridLayout:
             cols: 1
@@ -365,27 +360,20 @@ WindowManager:
             spacing: 10
             size_hint_y: 10
 
-
             GridLayout:
                 orientation: 'horizontal'
-                cols: 2
+                cols: 1
                 rows: 1
                 spacing: 10
                 padding: 10
 
-                ScaleLabel:
+                ScaleButton:
                     id: lbl
                     text: ""
                     text_size: self.size
                     valign: 'middle'
                     halign: 'center'
-
-                CheckBox:
-                    id: check
-                    on_active: root.checkbox_click(self, self.active)
-                    valign: 'middle'
-                    halign: 'center'
-
+                    on_press: root.add_to_favorites()
 
 <UnreadWords>:
     name: "unread"
@@ -469,7 +457,6 @@ WindowManager:
                 on_press:
                     root.reset_databases()
                     root.display_database()
-                    root.manager.get_screen('word').ids.check.active = False
 
 <ReadWords>:
     name: "read"
@@ -553,7 +540,6 @@ WindowManager:
                 on_press:
                     root.reset_databases()
                     root.display_database()
-                    root.manager.get_screen('word').ids.check.active = False
 
 <Favorites>:
     name: "favorites"

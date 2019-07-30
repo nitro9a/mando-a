@@ -84,29 +84,13 @@ def add_to_faves(self):
         else:
             database.add_word('mando-a_favorites.db', obj_text_list[0], obj_text_list[1], obj_text_list[2], Read=1)
 
-        obj_text_list.clear()
-
     except IndexError:
         pass
 
-def remove_from_faves(self):
-    print("remove: ", obj_text_list, current_word)
-    con = sqlite3.connect('mando-a_favorites.db')
-    cursor = con.cursor()
-
-    try:
-        cursor.execute("SELECT Mandoa from Mando_a WHERE Mandoa=?", (current_word,))
-        entry = cursor.fetchone()
-        if current_word not in entry:
-            pass
-        else:
-            database.remove_word('mando-a_favorites.db', current_word)
-
-    except IndexError:
-        pass
+    obj_text_list.clear()
 
 class MessageBox(Popup):
-
+    global obj_text_list
     def popup_dismiss(self):
         self.dismiss()
 
@@ -114,7 +98,7 @@ class MessageBox(Popup):
     obj_text = StringProperty('')
 
     def __init__(self, obj, **kwargs):
-        global obj_text_list
+
         super(MessageBox, self).__init__(**kwargs)
         self.obj = obj
 
@@ -129,15 +113,8 @@ class MessageBox(Popup):
     def add_to_favorites(self):
         add_to_faves(self)
 
-    def remove_from_favorites(self):
-        remove_from_faves(self)
-
-    def checkbox_click(self, instance, value):
-        if value is True:
-            self.add_to_favorites()
-        # if value is False remove from favorites
-        else:
-            pass
+    def clear(self):
+        obj_text_list.clear()
 
 class MessageBoxRead(Popup):
 
@@ -162,12 +139,8 @@ class MessageBoxRead(Popup):
     def add_to_favorites(self):
         add_to_faves(self)
 
-    def checkbox_click(self, instance, value):
-        if value is True:
-            self.add_to_favorites()
-        # if value is False remove from favorites
-        else:
-            pass
+    def clear(self):
+        obj_text_list.clear()
 
 class MessageBoxFavorites(Popup):
 
@@ -185,6 +158,27 @@ class MessageBoxFavorites(Popup):
         # from the unread_dict
         word_data = kv.get_screen('favorites').favorites_dict[obj.text]
         self.obj_text = word_data[0] + '\n' + word_data[1] + '\n' + word_data[2]
+
+    def remove_from_favorites(self):
+        print("OTL: ", obj_text_list)
+        con = sqlite3.connect('mando-a_favorites.db')
+        cursor = con.cursor()
+
+        try:
+            cursor.execute("SELECT Mandoa from Mando_a WHERE Mandoa=?", (current_word,))
+            entry = cursor.fetchone()
+            if current_word not in entry:
+                pass
+            else:
+                database.remove_word('mando-a_favorites.db', current_word)
+
+        except IndexError:
+            print("IndexError")
+        except TypeError:
+            print("TypeError")
+
+    def clear(self):
+        obj_text_list.clear()
 
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior, RecycleBoxLayout):
     """ Adds selection and focus behaviour to the view. """
@@ -305,21 +299,9 @@ class WordADay(Screen):
     def add_to_favorites(self):
         add_to_faves(self)
 
-    def remove_from_favorites(self):
-        remove_from_faves(self)
-
     def checkbox_click(self, instance, value):
         if value is True:
             self.add_to_favorites()
-            print("OTL", obj_text_list)
-        # if value is False remove from favorites
-        # value is made false by leaving screen
-        else:
-            try:
-                self.remove_from_favorites()
-                print("inactive")
-            except TypeError:
-                print("OTL", obj_text_list)
 
 class UnreadWords(Screen):
 
@@ -490,8 +472,5 @@ if __name__=="__main__":
     #TODO Add behavior for unchecking a favorite check box
     #TODO Show "add to favorites" on WordADay page only after word is selected
     #TODO Finished and reset dictionaries (FINISHED) need to clear WordADay add to favorites checkbox, will not add to favorites after clear
-
-
-
 
 
