@@ -69,7 +69,6 @@ def reset_dbs(self):
     (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
 
 def add_to_faves(self):
-    print("add: ", obj_text_list)
     con = sqlite3.connect('mando-a_favorites.db')
     cursor = con.cursor()
     global current_word
@@ -143,7 +142,8 @@ class MessageBoxRead(Popup):
         obj_text_list.clear()
 
 class MessageBoxFavorites(Popup):
-
+    favorite_list = []
+    current_favorite = ''
     def popup_dismiss(self):
         self.dismiss()
 
@@ -151,34 +151,32 @@ class MessageBoxFavorites(Popup):
     obj_text = StringProperty('')
 
     def __init__(self, obj, **kwargs):
+
         super(MessageBoxFavorites, self).__init__(**kwargs)
         self.obj = obj
 
-        # set the Popup text to the pronunciation and translation
-        # from the unread_dict
         word_data = kv.get_screen('favorites').favorites_dict[obj.text]
         self.obj_text = word_data[0] + '\n' + word_data[1] + '\n' + word_data[2]
+        self.favorite_list.extend([word_data[0], word_data[1], word_data[2]])
 
     def remove_from_favorites(self):
-        print("OTL: ", obj_text_list)
+
         con = sqlite3.connect('mando-a_favorites.db')
         cursor = con.cursor()
 
         try:
-            cursor.execute("SELECT Mandoa from Mando_a WHERE Mandoa=?", (current_word,))
+            w = self.favorite_list[0]
+            self.current_favorite = self.favorite_list[0]
+            print(self.current_favorite)
+            cursor.execute("SELECT Mandoa from Mando_a WHERE Mandoa=?", (w,))
             entry = cursor.fetchone()
-            if current_word not in entry:
-                pass
-            else:
-                database.remove_word('mando-a_favorites.db', current_word)
+            database.remove_word('mando-a_favorites.db', w)
 
         except IndexError:
-            print("IndexError")
-        except TypeError:
-            print("TypeError")
+            pass
 
     def clear(self):
-        obj_text_list.clear()
+        self.favorite_list.clear()
 
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior, RecycleBoxLayout):
     """ Adds selection and focus behaviour to the view. """
@@ -452,6 +450,10 @@ if __name__=="__main__":
     # Add ability to favorite from page 1 and page 2 - FINISHED
     # Clear CheckBox on "Get a Word" - FINISHED
     # Page 3 - FINISHED
+    # Add ability to remove favorite individually - FINISHED
+
+    # Show "add to favorites" on WordADay page only after word is selected - FINISHED
+    # Fix clicking on clickbox (now button) more than two times causes IndexError: list index out of range - FINISHED
 
     #TODO Figure out why the scrolling db in recycleview can be pushed further down and fix it
     #TODO Page 4
@@ -464,13 +466,10 @@ if __name__=="__main__":
     #TODO Find if there is a way to stop other py files from loading automatically - maybe putting them in utils?
     #TODO Make it easier to scroll through list (a-z selection?) goto_node(key, last_node, last_node_idx)
     #https://kivy.org/doc/stable/api-kivy.uix.recycleview.layout.html
-    #TODO Add ability to remove favorite individually
     #TODO Add real database and csv files and change code to utilize them in mando_a.py and app.py
     #TODO Add checks: "Are you sure you want to..."
     #TODO Set all labels, buttons, and popups to scale (possibly use scatter, once on touch events are added)
-    #TODO Fix clicking on clickbox more than two times causes IndexError: list index out of range
-    #TODO Add behavior for unchecking a favorite check box
-    #TODO Show "add to favorites" on WordADay page only after word is selected
-    #TODO Finished and reset dictionaries (FINISHED) need to clear WordADay add to favorites checkbox, will not add to favorites after clear
+    #TODO Finished and reset dictionaries (FINISHED) need to clear WordADay add to favorites checkbox (now button), will
+    # not add to favorites after clear - possible fix this by removing globals like in Favorites/remove from favorites
 
 
