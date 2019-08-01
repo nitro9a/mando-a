@@ -457,6 +457,8 @@ WindowManager:
                 pos_hint: {'top': .85, 'center_x': .5}
                 on_press:
                     root.reset_databases()
+                    root.manager.get_screen('word').ids.translation.text = ""
+                    root.manager.get_screen('word').ids.lbl.text = ""
                     root.display_database()
 
 <ReadWords>:
@@ -540,6 +542,8 @@ WindowManager:
                 pos_hint: {'top': .85, 'center_x': .5}
                 on_press:
                     root.reset_databases()
+                    root.manager.get_screen('word').ids.translation.text = ""
+                    root.manager.get_screen('word').ids.lbl.text = ""
                     root.display_database()
 
 <Favorites>:

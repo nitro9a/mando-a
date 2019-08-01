@@ -20,6 +20,7 @@ from kivy.uix.checkbox import CheckBox
 from kivy.properties import ObjectProperty, ListProperty, StringProperty, BooleanProperty
 
 obj_text_list = []
+
 current_word = "test"
 
 def reset_dbs(self):
@@ -221,7 +222,7 @@ class WindowManager(ScreenManager):
     pass
 
 class WordADay(Screen):
-
+    word_a_day = []
     word_dict = {}
 
     get = ObjectProperty(None)
@@ -256,6 +257,7 @@ class WordADay(Screen):
                 self.word_dict.update(entry)
 
         def get_random_word():
+            self.word_a_day.clear()
             #get words from the unread table and add them to word_dict using function "get_words"
             get_words(database.access_word_table('mando-a_unread.db'))
 
@@ -271,7 +273,9 @@ class WordADay(Screen):
                 eng =  (str(random_w['English']))
 
                 text_result = (f'\n\nWord: {str(word)}\nPronunciation: {str(pro)}\nEnglish: {str(eng)}')
-                obj_text_list.extend([word, pro, eng])
+                self.word_a_day.extend([word, pro, eng])
+
+                print("wad: ",self.word_a_day)
                 self.translation.text = text_result
 
                 #mark as read in the all table
@@ -295,7 +299,25 @@ class WordADay(Screen):
             get_random_word()
 
     def add_to_favorites(self):
-        add_to_faves(self)
+        con = sqlite3.connect('mando-a_favorites.db')
+        cursor = con.cursor()
+        print (self.word_a_day)
+        try:
+            w = self.word_a_day[0]
+            print(self.word_a_day[0])
+            cursor.execute("SELECT Mandoa from Mando_a WHERE Mandoa=?", (w,))
+            entry = cursor.fetchone()
+
+            print(entry)
+            if w in str(entry):
+                pass
+            else:
+                database.add_word('mando-a_favorites.db', self.word_a_day[0], self.word_a_day[1], self.word_a_day[2], Read=1)
+
+        except IndexError:
+            print(IndexError)
+
+    obj_text_list.clear()
 
     def checkbox_click(self, instance, value):
         if value is True:
@@ -454,9 +476,11 @@ if __name__=="__main__":
 
     # Show "add to favorites" on WordADay page only after word is selected - FINISHED
     # Fix clicking on clickbox (now button) more than two times causes IndexError: list index out of range - FINISHED
+    # Finished and reset dictionaries (FINISHED) need to clear WordADay add to favorites checkbox (now button), will
+    # not add to favorites after clear - possible fix this by removing globals like in Favorites/remove from favorites - FINISHED
+    # Page 4 - FINISHED
 
     #TODO Figure out why the scrolling db in recycleview can be pushed further down and fix it
-    #TODO Page 4
     #TODO Edit database to have only unique entries
     #TODO Add what happens when there are no words left
     #TODO Notifications - Plyer
@@ -469,7 +493,4 @@ if __name__=="__main__":
     #TODO Add real database and csv files and change code to utilize them in mando_a.py and app.py
     #TODO Add checks: "Are you sure you want to..."
     #TODO Set all labels, buttons, and popups to scale (possibly use scatter, once on touch events are added)
-    #TODO Finished and reset dictionaries (FINISHED) need to clear WordADay add to favorites checkbox (now button), will
-    # not add to favorites after clear - possible fix this by removing globals like in Favorites/remove from favorites
-
 
