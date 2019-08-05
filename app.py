@@ -103,6 +103,7 @@ class MessageBox(Popup):
         self.obj = obj
 
         # set the Popup text to the pronunciation and translation
+        # set the Popup text to the pronunciation and translation
         # from the unread_dict
         word_data = kv.get_screen('unread').unread_dict[obj.text]
         self.obj_text = word_data[0] + '\n' + word_data[1] + '\n' + word_data[2]
@@ -178,6 +179,13 @@ class MessageBoxFavorites(Popup):
 
     def clear(self):
         self.favorite_list.clear()
+
+class MessageBoxFinished(Popup):
+    #global obj_text_list
+    def popup_dismiss(self):
+        self.dismiss()
+    def reset_databases(self):
+        reset_dbs(self)
 
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior, RecycleBoxLayout):
     """ Adds selection and focus behaviour to the view. """
@@ -295,6 +303,9 @@ class WordADay(Screen):
 
         if rowcount == 0:
             print("finished")
+            popup = MessageBoxFinished()
+            popup.open()
+
         elif rowcount >= 1:
             get_random_word()
 
@@ -479,10 +490,10 @@ if __name__=="__main__":
     # Finished and reset dictionaries (FINISHED) need to clear WordADay add to favorites checkbox (now button), will
     # not add to favorites after clear - possible fix this by removing globals like in Favorites/remove from favorites - FINISHED
     # Page 4 - FINISHED
+    # Add what happens when there are no words left - FINISHED
 
     #TODO Figure out why the scrolling db in recycleview can be pushed further down and fix it
     #TODO Edit database to have only unique entries
-    #TODO Add what happens when there are no words left
     #TODO Notifications - Plyer
     #TODO Make pretty
     #TODO Add touch events
