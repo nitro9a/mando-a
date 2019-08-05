@@ -181,11 +181,22 @@ class MessageBoxFavorites(Popup):
         self.favorite_list.clear()
 
 class MessageBoxFinished(Popup):
-    #global obj_text_list
     def popup_dismiss(self):
         self.dismiss()
     def reset_databases(self):
         reset_dbs(self)
+
+class MessageBoxConfirmation(Popup):
+    def popup_dismiss(self):
+        self.dismiss()
+    def reset_databases(self):
+        reset_dbs(self)
+
+class MessageBoxFavoritesConfirmation(Popup):
+    def popup_dismiss(self):
+        self.dismiss()
+    def reset_favorites(self):
+        Favorites.reset_favorites(self)
 
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior, RecycleBoxLayout):
     """ Adds selection and focus behaviour to the view. """
@@ -360,8 +371,9 @@ class UnreadWords(Screen):
 
         self.ids.dat.data = [{'text': key} for key in self.unread_dict.keys()]
 
-    def reset_databases(self):
-        reset_dbs(self)
+    def confirmation_popup(self):
+        popup = MessageBoxConfirmation()
+        popup.open()
 
 class ReadWords(Screen):
 
@@ -389,8 +401,9 @@ class ReadWords(Screen):
 
         self.ids.dat.data = [{'text': key} for key in self.read_dict.keys()]
 
-    def reset_databases(self):
-        reset_dbs(self)
+    def confirmation_popup(self):
+        popup = MessageBoxConfirmation()
+        popup.open()
 
 class Favorites(Screen):
 
@@ -446,6 +459,10 @@ class Favorites(Screen):
         create_favorites('mando-a_favorites.csv', 'mando-a_favorites.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
         (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
 
+    def confirmation_popup(self):
+        popup = MessageBoxFavoritesConfirmation()
+        popup.open()
+
 kv = Builder.load_file("layout.kv")
 
 class WordApp(App):
@@ -491,6 +508,8 @@ if __name__=="__main__":
     # not add to favorites after clear - possible fix this by removing globals like in Favorites/remove from favorites - FINISHED
     # Page 4 - FINISHED
     # Add what happens when there are no words left - FINISHED
+    # Add checks: "Are you sure you want to..." - FINISHED
+
 
     #TODO Figure out why the scrolling db in recycleview can be pushed further down and fix it
     #TODO Edit database to have only unique entries
@@ -502,6 +521,4 @@ if __name__=="__main__":
     #TODO Make it easier to scroll through list (a-z selection?) goto_node(key, last_node, last_node_idx)
     #https://kivy.org/doc/stable/api-kivy.uix.recycleview.layout.html
     #TODO Add real database and csv files and change code to utilize them in mando_a.py and app.py
-    #TODO Add checks: "Are you sure you want to..."
     #TODO Set all labels, buttons, and popups to scale (possibly use scatter, once on touch events are added)
-

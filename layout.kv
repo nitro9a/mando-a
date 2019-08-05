@@ -71,6 +71,7 @@
     lbl: lbl
     btn: btn
     title: ''
+    separator_height: 0
     size_hint: None, None
     size: 400, 400
     on_dismiss: root.clear()
@@ -129,10 +130,11 @@
                     root.dismiss()
 
 <MessageBoxRead>:
-    name: 'mbox'
+    name: 'mboxr'
     lbl: lbl
     btn: btn
     title: ''
+    separator_height: 0
     size_hint: None, None
     size: 400, 400
     on_dismiss: root.clear()
@@ -191,10 +193,11 @@
                     root.dismiss()
 
 <MessageBoxFavorites>:
-    name: 'mbox'
+    name: 'mboxfav'
     lbl: lbl
     btn: btn
     title: ''
+    separator_height: 0
     size_hint: None, None
     size: 400, 400
     on_dismiss: root.clear()
@@ -255,11 +258,12 @@
                     root.dismiss()
 
 <MessageBoxFinished>:
-    name: 'mbox'
+    name: 'mboxfin'
     lbl: lbl
     yes: yes
     no: no
     title: ''
+    separator_height: 0
     size_hint: None, None
     size: 400, 400
 
@@ -301,7 +305,125 @@
                 text: 'Yes'
                 on_press:
                     root.reset_databases()
+                    root.dismiss()
 
+            ScaleButton:
+                id: no
+                orientation: 'horizontal'
+                size_hint: .2, .2
+                text: 'No'
+                on_press:
+                    root.dismiss()
+
+<MessageBoxConfirmation>:
+    name: 'mboxc'
+    lbl: lbl
+    yes: yes
+    no: no
+    title: ''
+    separator_height: 0
+    size_hint: None, None
+    size: 400, 400
+
+    GridLayout:
+        orientation: 'horizontal'
+        cols: 1
+        rows: 4
+        spacing: 10
+        padding: 10
+
+        GridLayout:
+            orientation: 'horizontal'
+            cols: 1
+            rows: 1
+            spacing: 10
+            padding: 10
+            size_hint_y: 25
+
+            ScaleLabel:
+                id: lbl
+                text: "Reset Dictionaries?"
+                halign: "center"
+                size_hint_y: None
+                text_size: self.width, None
+                height: self.texture_size[1]
+
+        GridLayout:
+            orientation: 'horizontal'
+            cols: 1
+            rows: 2
+            spacing: 30
+            padding: 30
+            size_hint_y: 50
+
+            ScaleButton:
+                id: yes
+                orientation: 'horizontal'
+                size_hint: .2, .2
+                text: 'Yes'
+                on_press:
+                    root.reset_databases()
+                    app.root.get_screen('unread').display_database()
+                    app.root.get_screen('read').display_database()
+                    root.dismiss()
+
+            ScaleButton:
+                id: no
+                orientation: 'horizontal'
+                size_hint: .2, .2
+                text: 'No'
+                on_press:
+                    root.dismiss()
+
+<MessageBoxFavoritesConfirmation>:
+    name: 'mboxcf'
+    lbl: lbl
+    yes: yes
+    no: no
+    title: ''
+    separator_height: 0
+    size_hint: None, None
+    size: 400, 400
+
+    GridLayout:
+        orientation: 'horizontal'
+        cols: 1
+        rows: 4
+        spacing: 10
+        padding: 10
+
+        GridLayout:
+            orientation: 'horizontal'
+            cols: 1
+            rows: 1
+            spacing: 10
+            padding: 10
+            size_hint_y: 25
+
+            ScaleLabel:
+                id: lbl
+                text: "Reset Favorites?"
+                halign: "center"
+                size_hint_y: None
+                text_size: self.width, None
+                height: self.texture_size[1]
+
+        GridLayout:
+            orientation: 'horizontal'
+            cols: 1
+            rows: 2
+            spacing: 30
+            padding: 30
+            size_hint_y: 50
+
+            ScaleButton:
+                id: yes
+                orientation: 'horizontal'
+                size_hint: .2, .2
+                text: 'Yes'
+                on_press:
+                    root.reset_favorites()
+                    app.root.get_screen('favorites').display_database()
                     root.dismiss()
 
             ScaleButton:
@@ -326,7 +448,6 @@ WindowManager:
 
     on_leave:
         root.manager.get_screen('favorites').display_database()
-        #root.ids.lbl.text = ""
 
     BoxLayout:
         spacing: 10
@@ -499,7 +620,7 @@ WindowManager:
                 text: "Reset Dictionaries"
                 pos_hint: {'top': .85, 'center_x': .5}
                 on_press:
-                    root.reset_databases()
+                    root.confirmation_popup()
                     root.manager.get_screen('word').ids.translation.text = ""
                     root.manager.get_screen('word').ids.lbl.text = ""
                     root.display_database()
@@ -584,7 +705,7 @@ WindowManager:
                 text: "Reset Dictionaries"
                 pos_hint: {'top': .85, 'center_x': .5}
                 on_press:
-                    root.reset_databases()
+                    root.confirmation_popup()
                     root.manager.get_screen('word').ids.translation.text = ""
                     root.manager.get_screen('word').ids.lbl.text = ""
                     root.display_database()
@@ -675,7 +796,7 @@ WindowManager:
                 text: "Reset Favorites"
                 pos_hint: {'top': .85, 'center_x': .5}
                 on_press:
-                    root.reset_favorites()
+                    root.confirmation_popup()
                     root.display_database()
 
 
