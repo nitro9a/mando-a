@@ -1,7 +1,7 @@
 import sqlite3
 import csv
 import random
-import textwrap
+#import textwrap
 from utils import database, scalelabel, scrollablelabel
 from kivy.app import App
 from kivy.lang import Builder
@@ -18,6 +18,7 @@ from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
 from kivy.uix.checkbox import CheckBox
 from kivy.properties import ObjectProperty, ListProperty, StringProperty, BooleanProperty
+from kivy.uix.recycleview.views import _cached_views, _view_base_cache
 
 obj_text_list = []
 
@@ -521,4 +522,7 @@ if __name__=="__main__":
     #TODO Make it easier to scroll through list (a-z selection?) goto_node(key, last_node, last_node_idx)
     #https://kivy.org/doc/stable/api-kivy.uix.recycleview.layout.html
     #TODO Add real database and csv files and change code to utilize them in mando_a.py and app.py
-    #TODO Set all labels, buttons, and popups to scale (possibly use scatter, once on touch events are added)
+    #TODO Set all labels, buttons, and popups to scale (possibly use scatter, once on touch events are added) or
+    #TODO make the entire message box scalable
+    #TODO Find out if Multiple Inheritance is possible with kv files.
+    #TODO Remove Add to Favorites? after end of dictionary pop-up
