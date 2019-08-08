@@ -1,7 +1,7 @@
 import sqlite3
 import csv
 import random
-import textwrap
+#import textwrap
 from utils import database, scalelabel, scrollablelabel
 from kivy.app import App
 from kivy.lang import Builder
@@ -18,6 +18,7 @@ from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
 from kivy.uix.checkbox import CheckBox
 from kivy.properties import ObjectProperty, ListProperty, StringProperty, BooleanProperty
+from kivy.uix.recycleview.views import _cached_views, _view_base_cache
 
 obj_text_list = []
 
@@ -109,7 +110,6 @@ class MessageBox(Popup):
         self.obj_text = word_data[0] + '\n' + word_data[1] + '\n' + word_data[2]
 
         obj_text_list.extend([word_data[0], word_data[1], word_data[2]])
-        print("OBJ TEXT LIST", obj_text_list)
 
     def add_to_favorites(self):
         add_to_faves(self)
@@ -169,7 +169,6 @@ class MessageBoxFavorites(Popup):
         try:
             w = self.favorite_list[0]
             self.current_favorite = self.favorite_list[0]
-            print(self.current_favorite)
             cursor.execute("SELECT Mandoa from Mando_a WHERE Mandoa=?", (w,))
             entry = cursor.fetchone()
             database.remove_word('mando-a_favorites.db', w)
@@ -248,7 +247,7 @@ class WordADay(Screen):
     translation = ObjectProperty(None)
 
     def __init__(self, **kwargs):
-        global obj_text_list
+        #global obj_text_list
         super(WordADay, self).__init__(**kwargs)
         self.unread_dict = {}
 
@@ -294,7 +293,6 @@ class WordADay(Screen):
                 text_result = (f'\n\nWord: {str(word)}\nPronunciation: {str(pro)}\nEnglish: {str(eng)}')
                 self.word_a_day.extend([word, pro, eng])
 
-                print("wad: ",self.word_a_day)
                 self.translation.text = text_result
 
                 #mark as read in the all table
@@ -313,7 +311,6 @@ class WordADay(Screen):
                 print("key error")
 
         if rowcount == 0:
-            print("finished")
             popup = MessageBoxFinished()
             popup.open()
 
@@ -323,14 +320,12 @@ class WordADay(Screen):
     def add_to_favorites(self):
         con = sqlite3.connect('mando-a_favorites.db')
         cursor = con.cursor()
-        print (self.word_a_day)
+
         try:
             w = self.word_a_day[0]
-            print(self.word_a_day[0])
             cursor.execute("SELECT Mandoa from Mando_a WHERE Mandoa=?", (w,))
             entry = cursor.fetchone()
 
-            print(entry)
             if w in str(entry):
                 pass
             else:
@@ -463,6 +458,9 @@ class Favorites(Screen):
         popup = MessageBoxFavoritesConfirmation()
         popup.open()
 
+class Test(Screen):
+    pass
+
 kv = Builder.load_file("layout.kv")
 
 class WordApp(App):
@@ -471,6 +469,7 @@ class WordApp(App):
 
 if __name__=="__main__":
     WordApp().run()
+
 
     # look at exercise dice, gen_ex_die, for line in text - figure out text wrapping - FINISHED
     # Make pages - FINISHED
@@ -520,5 +519,5 @@ if __name__=="__main__":
     #TODO Find if there is a way to stop other py files from loading automatically - maybe putting them in utils?
     #TODO Make it easier to scroll through list (a-z selection?) goto_node(key, last_node, last_node_idx)
     #https://kivy.org/doc/stable/api-kivy.uix.recycleview.layout.html
-    #TODO Add real database and csv files and change code to utilize them in mando_a.py and app.py
+    #TODO Add real database and csv files and change code to utilize them in mando_a.py and main.py
     #TODO Set all labels, buttons, and popups to scale (possibly use scatter, once on touch events are added)
