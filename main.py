@@ -516,8 +516,12 @@ if __name__=="__main__":
     #TODO Make pretty
     #TODO Add touch events
     #TODO Add Search
+    #TODO Dynamically Refine Search
     #TODO Find if there is a way to stop other py files from loading automatically - maybe putting them in utils?
     #TODO Make it easier to scroll through list (a-z selection?) goto_node(key, last_node, last_node_idx)
     #https://kivy.org/doc/stable/api-kivy.uix.recycleview.layout.html
     #TODO Add real database and csv files and change code to utilize them in mando_a.py and main.py
     #TODO Set all labels, buttons, and popups to scale (possibly use scatter, once on touch events are added)
+    #TODO Word a Day Android Widget
+
+    
