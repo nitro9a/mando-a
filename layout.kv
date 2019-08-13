@@ -42,7 +42,7 @@
 <-SelectableButton>:
     state_image: self.background_normal if self.state == 'normal' else self.background_down
 	disabled_image: self.background_disabled_normal if self.state == 'normal' else self.background_disabled_down
-	_scale: 1. if self.texture_size[0] < self.width else float(self.width - 10) / self.texture_size[0]
+	_scale: 1. if self.texture_size[0] < self.width else float(self.width - 10) / (self.texture_size[0] + .001)
 	orientation: 'horizontal'
     # Draw a background to indicate selection
     canvas.before:
@@ -109,7 +109,7 @@
             ScaleButton:
                 id: btn
                 text: "  Add to Favorites?"
-                size_hint_y: None
+                size_hint_y: 25
                 text_size: self.width, None
                 height: self.texture_size[1]
                 on_press: root.add_to_favorites()
@@ -173,7 +173,7 @@
             ScaleButton:
                 id: btn
                 text: "  Add to Favorites?"
-                size_hint_y: None
+                size_hint_y: 25
                 text_size: self.width, None
                 height: self.texture_size[1]
                 on_press: root.add_to_favorites()
@@ -236,7 +236,7 @@
             ScaleButton:
                 id: btn
                 text: "  Remove from Favorites?"
-                size_hint_y: None
+                size_hint_y: 25
                 text_size: self.width, None
                 height: self.texture_size[1]
                 on_press:
@@ -558,7 +558,7 @@ WindowManager:
                     valign: 'middle'
                     halign: 'center'
                     on_press: root.add_to_favorites()
-                    on_release: root.manager.get_screen('favorites').display_database()
+                    on_release: app.root.get_screen('favorites').display_database()
 
 <UnreadWords>:
     name: "unread"

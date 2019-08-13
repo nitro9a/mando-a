@@ -1,7 +1,7 @@
 [app]
 
 # (str) Title of your application
-title = Mando a
+title = Mando\'a
 
 # (str) Package name
 package.name = mandoa
@@ -36,14 +36,14 @@ version = 1.0
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,sqlite3
+requirements = python3,kivy,sqlite3,plyer
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
 # requirements.source.kivy = ../../kivy
 
 # (list) Garden requirements
-garden_requirements = recycleview
+garden_requirements = recycleview, scrolllabel
 
 # (str) Presplash of the application
 #presplash.filename = %(source.dir)s/data/presplash.png

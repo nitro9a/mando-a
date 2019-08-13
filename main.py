@@ -1,7 +1,8 @@
 import sqlite3
 import csv
 import random
-#import textwrap
+import plyer
+from plyer import notification, facades
 from utils import database, scalelabel, scrollablelabel
 from kivy.app import App
 from kivy.lang import Builder
@@ -19,6 +20,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
 from kivy.uix.checkbox import CheckBox
 from kivy.properties import ObjectProperty, ListProperty, StringProperty, BooleanProperty
 from kivy.uix.recycleview.views import _cached_views, _view_base_cache
+
 
 obj_text_list = []
 
@@ -509,6 +511,8 @@ if __name__=="__main__":
     # Add what happens when there are no words left - FINISHED
     # Add checks: "Are you sure you want to..." - FINISHED
 
+    # Add real database and csv files and change code to utilize them in mando_a.py and main.py - FINISHED
+
 
     #TODO Figure out why the scrolling db in recycleview can be pushed further down and fix it
     #TODO Edit database to have only unique entries
@@ -520,8 +524,12 @@ if __name__=="__main__":
     #TODO Find if there is a way to stop other py files from loading automatically - maybe putting them in utils?
     #TODO Make it easier to scroll through list (a-z selection?) goto_node(key, last_node, last_node_idx)
     #https://kivy.org/doc/stable/api-kivy.uix.recycleview.layout.html
-    #TODO Add real database and csv files and change code to utilize them in mando_a.py and main.py
     #TODO Set all labels, buttons, and popups to scale (possibly use scatter, once on touch events are added)
     #TODO Word a Day Android Widget
+    #TODO Fix database visible refresh
+    #TODO remove test csv and databases
+    #TODO change icons, favicons
+    #TODO disable favorites button when it isn't in use
+
 
     
