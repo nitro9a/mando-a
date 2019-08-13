@@ -4,7 +4,7 @@ import sqlite3
 import csv
 
 def create_database(csv_file, database, execute_create, execute_insert):
-    f = open(csv_file,'r')
+    f = open(csv_file,'r', encoding='utf-8', errors= 'ignore')  # TEMPORARY FIX
     next(f, None)
     reader = csv.reader(f)
 
@@ -34,10 +34,10 @@ def delete_database_read(database):
     cursor = sql.cursor()
     cursor.execute("DROP TABLE Mando_a")
 
-create_database('mando-a-short.csv', 'mando-a_all.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
+create_database('mando-a.csv', 'mando-a_all.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
     (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
 
-create_database('mando-a-short.csv', 'mando-a_unread.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
+create_database('mando-a.csv', 'mando-a_unread.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
     (Mandoa, Pronunciation, English, Read)''', "INSERT INTO Mando_a VALUES (?,?,?,0)")
 
 create_database('mando-a_read.csv', 'mando-a_read.db', '''CREATE TABLE IF NOT EXISTS Mando_a 
