@@ -455,11 +455,6 @@ WindowManager:
     get: get
     translation: translation
 
-    #on_leave:
-        #root.manager.get_screen('favorites').display_database()
-        #root.manager.get_screen('unread').display_database()
-        #root.manager.get_screen('read').display_database()
-
     BoxLayout:
         spacing: 10
         padding: 10
@@ -484,24 +479,19 @@ WindowManager:
                 text: "Page 2"
                 on_press:
                     app.root.current = "unread"
-                on_release:
-                    root.manager.get_screen('unread').display_database()
+                    app.root.get_screen('unread').display_database()
 
             ScaleButton:
                 id: page3
                 text: "Page 3"
                 on_press:
                     app.root.current = "read"
-                on_release:
-                    root.manager.get_screen('read').display_database()
 
             ScaleButton:
                 id: page4
                 text: "Page 4"
                 on_press:
                     app.root.current = "favorites"
-                on_release:
-                    root.manager.get_screen('favorites').display_database()
 
         GridLayout:
             cols: 1
@@ -517,9 +507,9 @@ WindowManager:
                 on_press:
                     root.random_word()
                     root.ids.btn.text = "    Add to favorites?"
-                #on_release:
-                    #app.root.get_screen('unread').display_database()
-                    #root.manager.get_screen('read').display_database()
+                on_release:
+                    app.root.get_screen('unread').display_database()
+                    app.root.get_screen('read').display_database()
 
         GridLayout:
             cols: 1
@@ -589,24 +579,18 @@ WindowManager:
                 text: "Page 2"
                 on_press:
                     app.root.current = "unread"
-                on_release:
-                    root.display_database()
 
             ScaleButton:
                 id: page3
                 text: "Page 3"
                 on_press:
                     app.root.current = "read"
-                on_release:
-                    root.manager.get_screen('read').display_database()
 
             ScaleButton:
                 id: page4
                 text: "Page 4"
                 on_press:
                     app.root.current = "favorites"
-                on_release:
-                    root.manager.get_screen('favorites').display_database()
 
         GridLayout:
             cols: 4
@@ -677,24 +661,19 @@ WindowManager:
                 text: "Page 2"
                 on_press:
                     app.root.current = "unread"
-                on_release:
-                    root.manager.get_screen('unread').display_database()
+                    app.root.get_screen('unread').display_database()
 
             ScaleButton:
                 id: page3
                 text: "Page 3"
                 on_press:
                     app.root.current = "read"
-                on_release:
-                    root.display_database()
 
             ScaleButton:
                 id: page4
                 text: "Page 4"
                 on_press:
                     app.root.current = "favorites"
-                on_release:
-                    root.manager.get_screen('favorites').display_database()
 
         GridLayout:
             cols: 4
@@ -770,25 +749,20 @@ WindowManager:
                 id: page2
                 text: "Page 2"
                 on_press:
-                    root.manager.get_screen('unread').display_database()
-                on_release:
                     app.root.current = "unread"
+                    app.root.get_screen('unread').display_database()
 
             ScaleButton:
                 id: page3
                 text: "Page 3"
                 on_press:
                     app.root.current = "read"
-                on_release:
-                    root.manager.get_screen('read').display_database()
 
             ScaleButton:
                 id: page4
                 text: "Page 4"
                 on_press:
                     app.root.current = "favorites"
-                on_release:
-                    root.display_database()
 
         GridLayout:
             cols: 4

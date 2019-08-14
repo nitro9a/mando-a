@@ -6,6 +6,7 @@ from plyer import notification, facades
 from utils import database, scalelabel, scrollablelabel
 from kivy.app import App
 from kivy.lang import Builder
+from kivy.clock import Clock
 from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 from kivy.uix.button import Button
@@ -530,6 +531,10 @@ if __name__=="__main__":
     #TODO remove test csv and databases
     #TODO change icons, favicons
     #TODO disable favorites button when it isn't in use
+    #TODO fix issue with page visibly refreshing upon selecting page
+    #TODO add random Mando phrases to the loading page
+
+
 
 
     
