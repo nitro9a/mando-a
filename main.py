@@ -513,26 +513,27 @@ if __name__=="__main__":
     # Add checks: "Are you sure you want to..." - FINISHED
 
     # Add real database and csv files and change code to utilize them in mando_a.py and main.py - FINISHED
+    # Fix issue with page visibly refreshing upon selecting page - FINISHED
+    # Add touch events - FINISHED (unnecessary)
+    # fix issue with page visibly refreshing upon selecting page - FINISHED
 
-
-    #TODO Figure out why the scrolling db in recycleview can be pushed further down and fix it
-    #TODO Edit database to have only unique entries
-    #TODO Notifications - Plyer
-    #TODO Make pretty
-    #TODO Add touch events
-    #TODO Add Search
-    #TODO Dynamically Refine Search
-    #TODO Find if there is a way to stop other py files from loading automatically - maybe putting them in utils?
-    #TODO Make it easier to scroll through list (a-z selection?) goto_node(key, last_node, last_node_idx)
-    #https://kivy.org/doc/stable/api-kivy.uix.recycleview.layout.html
+    #TODO Edit database to have only unique entries; edit for consistency
+    #TODO disable favorites button when it isn't in use
     #TODO Set all labels, buttons, and popups to scale (possibly use scatter, once on touch events are added)
-    #TODO Word a Day Android Widget
-    #TODO Fix database visible refresh
+    #TODO Figure out why the scrolling db in recycleview can be pushed further down and fix it
+    #TODO Make pretty
+    #TODO Notifications - Plyer
     #TODO remove test csv and databases
     #TODO change icons, favicons
-    #TODO disable favorites button when it isn't in use
-    #TODO fix issue with page visibly refreshing upon selecting page
+
+
+    #TODO Add Search
+    #TODO Dynamically Refine Search
+    #TODO Make it easier to scroll through list (a-z selection?) goto_node(key, last_node, last_node_idx)
+    #https://kivy.org/doc/stable/api-kivy.uix.recycleview.layout.html
+    #TODO Word a Day Android Widget
     #TODO add random Mando phrases to the loading page
+
 
 
 
