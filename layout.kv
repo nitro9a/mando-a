@@ -15,18 +15,15 @@
     keep_ratio: True
 <ScaleLabel>:
     size_hint: .5, .5
-    pos_hint: {'top': .65, 'center_x': .5}
-    color: (0/255., 0/255., 0/255., 1)
+    pos_hint: {'top': .85, 'center_x': .5}
+    color: black
     background_normal: ''
-    bcolor: (155/255., 155/255., 155/255., 1)
+    bcolor: red
     allow_stretch: False
     keep_ratio: True
 <ScrollableLabel>:
-    bcolor: (155/255., 155/255., 155/255., 1)
-    color: (0/255., 0/255., 0/255., 1)
-<SelectableButton>:
-    color: (0/255., 255/255., 0/255., 1)
-    background_color: (0/255., 155/255., 155/255., 1)
+    bcolor: yellow
+    color: orange
 
 <RV>:
     viewclass: 'SelectableButton'
@@ -91,7 +88,7 @@
             padding: 10
             size_hint_y: 60
 
-            ScrollableLabel:
+            ScaleLabel:
                 id: lbl
                 text: root.obj_text
                 size_hint_y: None
@@ -109,9 +106,9 @@
             ScaleButton:
                 id: btn
                 text: "  Add to Favorites?"
-                size_hint_y: 25
-                text_size: self.width, None
-                height: self.texture_size[1]
+                #size_hint_y: 25
+                #text_size: self.width, None
+                #height: self.texture_size[1]
                 on_press: root.add_to_favorites()
                 on_release: app.root.get_screen('favorites').display_database()
 
@@ -173,9 +170,9 @@
             ScaleButton:
                 id: btn
                 text: "  Add to Favorites?"
-                size_hint_y: 25
-                text_size: self.width, None
-                height: self.texture_size[1]
+                #size_hint_y: 25
+                #text_size: self.width, None
+                #height: self.texture_size[1]
                 on_press: root.add_to_favorites()
                 on_release: app.root.get_screen('favorites').display_database()
 
@@ -236,9 +233,9 @@
             ScaleButton:
                 id: btn
                 text: "  Remove from Favorites?"
-                size_hint_y: 25
-                text_size: self.width, None
-                height: self.texture_size[1]
+                #size_hint_y: 25
+                #text_size: self.width, None
+                #height: self.texture_size[1]
                 on_press:
                     root.remove_from_favorites()
                 on_release:
@@ -449,7 +446,6 @@ WindowManager:
     ReadWords:
     Favorites:
 
-
 <WordADay>:
     name: "word"
     get: get
@@ -486,12 +482,14 @@ WindowManager:
                 text: "Page 3"
                 on_press:
                     app.root.current = "read"
+                    app.root.get_screen('read').display_database()
 
             ScaleButton:
                 id: page4
                 text: "Page 4"
                 on_press:
                     app.root.current = "favorites"
+                    app.root.get_screen('favorites').display_database()
 
         GridLayout:
             cols: 1
@@ -503,30 +501,30 @@ WindowManager:
                 id: get
                 text: "Get a Word"
                 pos_hint: {'top': .85, 'center_x': .5}
-
                 on_press:
                     root.random_word()
-                    root.ids.btn.text = "    Add to favorites?"
+                    root.ids.btn.text = "Add to favorites?"
+                    root.ids.btn.disabled = False
                 on_release:
                     app.root.get_screen('unread').display_database()
                     app.root.get_screen('read').display_database()
+                    root.ids.translation.scroll_y = 1
 
         GridLayout:
             cols: 1
             rows: 1
             spacing: 10
             size_hint_y: 70
-
-            ScaleLabel:
+            padding: 20
+###
+            ScrollableLabel:
                 id: translation
                 text: ""
-                pos_hint: {'top': .65, 'center_x': .5}
-                size_hint: .7, .5
                 font_size: 75
-                valign: 'top'
-                halign: 'center'
-                text_size: self.size
-                height: self.texture_size[1]
+                bar_width: 10
+                bar_color: red
+                bar_inactive_color: black
+                scroll_type: ['content']
 
         GridLayout:
             cols: 1
@@ -544,7 +542,8 @@ WindowManager:
                 ScaleButton:
                     id: btn
                     text: ""
-                    text_size: self.size
+                    #text_size: self.size
+                    disabled: True
                     valign: 'middle'
                     halign: 'center'
                     on_press: root.add_to_favorites()
@@ -579,18 +578,21 @@ WindowManager:
                 text: "Page 2"
                 on_press:
                     app.root.current = "unread"
+                    app.root.get_screen('unread').display_database()
 
             ScaleButton:
                 id: page3
                 text: "Page 3"
                 on_press:
                     app.root.current = "read"
+                    app.root.get_screen('read').display_database()
 
             ScaleButton:
                 id: page4
                 text: "Page 4"
                 on_press:
                     app.root.current = "favorites"
+                    app.root.get_screen('read').display_database()
 
         GridLayout:
             cols: 4
@@ -600,7 +602,6 @@ WindowManager:
 
             ScaleLabel:
                 text: "Unread Words"
-                size_hint_y: 5
 
         GridLayout:
             cols: 1
@@ -668,12 +669,14 @@ WindowManager:
                 text: "Page 3"
                 on_press:
                     app.root.current = "read"
+                    app.root.get_screen('read').display_database()
 
             ScaleButton:
                 id: page4
                 text: "Page 4"
                 on_press:
                     app.root.current = "favorites"
+                    app.root.get_screen('favorites').display_database()
 
         GridLayout:
             cols: 4
@@ -683,7 +686,6 @@ WindowManager:
 
             ScaleLabel:
                 text: "Read Words"
-                size_hint_y: 5
 
         GridLayout:
             cols: 1
@@ -757,12 +759,14 @@ WindowManager:
                 text: "Page 3"
                 on_press:
                     app.root.current = "read"
+                    app.root.get_screen('read').display_database()
 
             ScaleButton:
                 id: page4
                 text: "Page 4"
                 on_press:
                     app.root.current = "favorites"
+                    app.root.get_screen('favorites').display_database()
 
         GridLayout:
             cols: 4
@@ -772,7 +776,6 @@ WindowManager:
 
             ScaleLabel:
                 text: "Favorites"
-                size_hint_y: 5
 
         GridLayout:
             cols: 1
@@ -802,7 +805,3 @@ WindowManager:
                     root.confirmation_popup()
                 on_release:
                     root.display_database()
-
-
-
-

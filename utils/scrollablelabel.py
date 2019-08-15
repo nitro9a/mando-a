@@ -7,22 +7,25 @@ from kivy.lang import Builder
 long_text = 'yay moo cow foo bar moo baa ' * 100
 
 Builder.load_string('''
-<ScrollableLabel@Label>:
-    
-    bcolor: 1,1,1,1
-    canvas.before:
-        PushMatrix
-        Color:
-            rgba: self.bcolor
-        Rectangle:
-            pos: self.pos
-            size: self.size
-    canvas.after:
-        PopMatrix
-       
-        
-  
-        
+<ScrollableLabel>:
+    bcolor: 3,3,0,1
+    color: 0,0,0,1
+    Label:
+        size_hint_y: None
+        height: self.texture_size[1]
+        text_size: self.width, None
+        color: root.color
+        text: root.text
+        font_size: 75
+        valign: "top"
+
+        canvas.before:          
+            Color:
+                rgba: root.bcolor
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
 ''')
 
 class ScrollableLabel(ScrollView):

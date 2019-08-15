@@ -293,7 +293,7 @@ class WordADay(Screen):
                 pro = (str(random_w['Pronunciation']))
                 eng =  (str(random_w['English']))
 
-                text_result = (f'\n\nWord: {str(word)}\nPronunciation: {str(pro)}\nEnglish: {str(eng)}')
+                text_result = (f'Word: {str(word)}\nPronunciation: {str(pro)}\nEnglish: {str(eng)}')
                 self.word_a_day.extend([word, pro, eng])
 
                 self.translation.text = text_result
@@ -516,9 +516,9 @@ if __name__=="__main__":
     # Fix issue with page visibly refreshing upon selecting page - FINISHED
     # Add touch events - FINISHED (unnecessary)
     # fix issue with page visibly refreshing upon selecting page - FINISHED
+    # Edit database to have only unique entries; edit for consistency - FINISHED
+    # disable favorites button when it isn't in use - FINISHED
 
-    #TODO Edit database to have only unique entries; edit for consistency
-    #TODO disable favorites button when it isn't in use
     #TODO Set all labels, buttons, and popups to scale (possibly use scatter, once on touch events are added)
     #TODO Figure out why the scrolling db in recycleview can be pushed further down and fix it
     #TODO Make pretty
