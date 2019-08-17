@@ -11,6 +11,7 @@ from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
+from kivy.effects import kinetic, scroll
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleboxlayout import RecycleBoxLayout
@@ -518,10 +519,11 @@ if __name__=="__main__":
     # fix issue with page visibly refreshing upon selecting page - FINISHED
     # Edit database to have only unique entries; edit for consistency - FINISHED
     # disable favorites button when it isn't in use - FINISHED
+    # Set all labels, buttons, and popups to scale (possibly use scatter, once on touch events are added)- FINISHED
 
-    #TODO Set all labels, buttons, and popups to scale (possibly use scatter, once on touch events are added)
     #TODO Figure out why the scrolling db in recycleview can be pushed further down and fix it
     #TODO Make pretty
+    #TODO Change colors of intividual parts of translation
     #TODO Notifications - Plyer
     #TODO remove test csv and databases
     #TODO change icons, favicons
@@ -531,8 +533,11 @@ if __name__=="__main__":
     #TODO Dynamically Refine Search
     #TODO Make it easier to scroll through list (a-z selection?) goto_node(key, last_node, last_node_idx)
     #https://kivy.org/doc/stable/api-kivy.uix.recycleview.layout.html
+    #see scroll effect
     #TODO Word a Day Android Widget
     #TODO add random Mando phrases to the loading page
+    #TODO add color options
+
 
 
 

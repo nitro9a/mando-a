@@ -4,7 +4,7 @@ from kivy.lang import Builder
 root = Builder.load_string('''
 <ScaleLabel@Label>:
 	_scale: 1. if self.texture_size[0] < self.width else float(self.width) / self.texture_size[0]
-	bcolor: 1,1,1,1
+	background_color: 0,0,0,1
 	canvas.before:
 		PushMatrix
 		Scale:
@@ -12,7 +12,7 @@ root = Builder.load_string('''
 			x: self._scale or 1.
 			y: self._scale or 1.
 		Color:
-			rgba: self.bcolor
+			rgba: self.background_color
 		Rectangle:
 			pos: self.pos
 			size: self.size
