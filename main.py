@@ -23,6 +23,9 @@ from kivy.uix.checkbox import CheckBox
 from kivy.properties import ObjectProperty, ListProperty, StringProperty, BooleanProperty
 from kivy.uix.recycleview.views import _cached_views, _view_base_cache
 
+dgrey = (45/255, 45/255, 45/255, 1)
+red = (155/255, 10/255, 10/255, 1)
+white = (1,1,1,1)
 
 obj_text_list = []
 
@@ -470,10 +473,16 @@ kv = Builder.load_file("layout.kv")
 class WordApp(App):
     def build(self):
         return kv
+    def on_start(self):
+
+        self.root.get_screen('unread').display_database()
+        self.root.get_screen('read').display_database()
+        self.root.get_screen('favorites').display_database()
+
+        #to set current page at start use: self.root.current = ('word')
 
 if __name__=="__main__":
     WordApp().run()
-
 
     # look at exercise dice, gen_ex_die, for line in text - figure out text wrapping - FINISHED
     # Make pages - FINISHED
@@ -521,13 +530,16 @@ if __name__=="__main__":
     # disable favorites button when it isn't in use - FINISHED
     # Set all labels, buttons, and popups to scale (possibly use scatter, once on touch events are added)- FINISHED
 
+    # remove page titles since they are already on tabs - FINISHED
+    # normalize page layouts - FINISHED
+
     #TODO Figure out why the scrolling db in recycleview can be pushed further down and fix it
     #TODO Make pretty
     #TODO Change colors of intividual parts of translation
     #TODO Notifications - Plyer
     #TODO remove test csv and databases
     #TODO change icons, favicons
-
+    #TODO add images for backgound normal/down
 
     #TODO Add Search
     #TODO Dynamically Refine Search
