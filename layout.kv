@@ -307,6 +307,10 @@
                 text: 'Yes'
                 on_press:
                     root.reset_databases()
+                    app.root.get_screen('word').ids.translation.text = ""
+                    app.root.get_screen('word').ids.btn.text = ""
+                    app.root.get_screen('word').ids.btn.disabled = True
+                    app.root.get_screen('word').ids.btn.background_color = black
                 on_release:
                     app.root.get_screen('read').display_database()
                     app.root.get_screen('unread').display_database()
@@ -368,6 +372,10 @@
                 text: 'Yes'
                 on_press:
                     root.reset_databases()
+                    app.root.get_screen('word').ids.translation.text = ""
+                    app.root.get_screen('word').ids.btn.text = ""
+                    app.root.get_screen('word').ids.btn.disabled = True
+                    app.root.get_screen('word').ids.btn.background_color = black
                 on_release:
                     app.root.get_screen('unread').display_database()
                     app.root.get_screen('read').display_database()
@@ -526,7 +534,7 @@ WindowManager:
 
             ScrollableLabel:
                 id: translation
-                text: ""
+                text: ''
                 fsize: 100
                 bar_width: 10
                 bar_color: red
@@ -634,10 +642,6 @@ WindowManager:
                 pos_hint: {'top': .85, 'center_x': .5}
                 on_press:
                     root.confirmation_popup()
-                    root.manager.get_screen('word').ids.translation.text = ""
-                    root.manager.get_screen('word').ids.btn.text = ""
-                    root.manager.get_screen('word').ids.btn.disabled = True
-                    root.manager.get_screen('word').ids.btn.background_color = black
                     root.display_database()
 
 <ReadWords>:
@@ -716,10 +720,6 @@ WindowManager:
                 pos_hint: {'top': .85, 'center_x': .5}
                 on_press:
                     root.confirmation_popup()
-                    root.manager.get_screen('word').ids.translation.text = ""
-                    root.manager.get_screen('word').ids.btn.text = ""
-                    root.manager.get_screen('word').ids.btn.disabled = True
-                    root.manager.get_screen('word').ids.btn.background_color = black
                     root.display_database()
 
 <Favorites>:

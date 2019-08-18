@@ -1,7 +1,7 @@
 [app]
 
 # (str) Title of your application
-title = Mando\'a
+title = Learn Mando\'a\!
 
 # (str) Package name
 package.name = mandoa
