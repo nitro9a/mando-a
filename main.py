@@ -22,10 +22,14 @@ from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
 from kivy.uix.checkbox import CheckBox
 from kivy.properties import ObjectProperty, ListProperty, StringProperty, BooleanProperty
 from kivy.uix.recycleview.views import _cached_views, _view_base_cache
+from kivy.config import Config
+
+#Config.set('graphics', 'multisamples', 0)
 
 dgrey = (45/255, 45/255, 45/255, 1)
 red = (155/255, 10/255, 10/255, 1)
 white = (1,1,1,1)
+black = (0,0,0,1)
 
 obj_text_list = []
 
@@ -114,7 +118,7 @@ class MessageBox(Popup):
         # set the Popup text to the pronunciation and translation
         # from the unread_dict
         word_data = kv.get_screen('unread').unread_dict[obj.text]
-        self.obj_text = word_data[0] + '\n' + word_data[1] + '\n' + word_data[2]
+        self.obj_text = word_data[0] + '\n\n' + word_data[1] + '\n\n' + word_data[2]
 
         obj_text_list.extend([word_data[0], word_data[1], word_data[2]])
 
@@ -140,7 +144,7 @@ class MessageBoxRead(Popup):
         # set the Popup text to the pronunciation and translation
         # from the unread_dict
         word_data = kv.get_screen('read').read_dict[obj.text]
-        self.obj_text = word_data[0] + '\n' + word_data[1] + '\n' + word_data[2]
+        self.obj_text = word_data[0] + '\n\n' + word_data[1] + '\n\n' + word_data[2]
 
         obj_text_list.extend([word_data[0], word_data[1], word_data[2]])
 
@@ -165,7 +169,7 @@ class MessageBoxFavorites(Popup):
         self.obj = obj
 
         word_data = kv.get_screen('favorites').favorites_dict[obj.text]
-        self.obj_text = word_data[0] + '\n' + word_data[1] + '\n' + word_data[2]
+        self.obj_text = word_data[0] + '\n\n' + word_data[1] + '\n\n' + word_data[2]
         self.favorite_list.extend([word_data[0], word_data[1], word_data[2]])
 
     def remove_from_favorites(self):
@@ -297,7 +301,7 @@ class WordADay(Screen):
                 pro = (str(random_w['Pronunciation']))
                 eng =  (str(random_w['English']))
 
-                text_result = (f'Word: {str(word)}\nPronunciation: {str(pro)}\nEnglish: {str(eng)}')
+                text_result = (f'{str(word)}\n\n{str(pro)}\n\n{str(eng)}')
                 self.word_a_day.extend([word, pro, eng])
 
                 self.translation.text = text_result
@@ -342,10 +346,6 @@ class WordADay(Screen):
             print(IndexError)
 
     obj_text_list.clear()
-
-    def checkbox_click(self, instance, value):
-        if value is True:
-            self.add_to_favorites()
 
 class UnreadWords(Screen):
 
@@ -473,6 +473,7 @@ kv = Builder.load_file("layout.kv")
 class WordApp(App):
     def build(self):
         return kv
+
     def on_start(self):
 
         self.root.get_screen('unread').display_database()
@@ -532,20 +533,21 @@ if __name__=="__main__":
 
     # remove page titles since they are already on tabs - FINISHED
     # normalize page layouts - FINISHED
+    # add images for backgound normal/down - FINISHED
+    # Make pretty - FINISHED
 
-    #TODO Figure out why the scrolling db in recycleview can be pushed further down and fix it
-    #TODO Make pretty
-    #TODO Change colors of intividual parts of translation
+
     #TODO Notifications - Plyer
     #TODO remove test csv and databases
     #TODO change icons, favicons
-    #TODO add images for backgound normal/down
+
 
     #TODO Add Search
     #TODO Dynamically Refine Search
     #TODO Make it easier to scroll through list (a-z selection?) goto_node(key, last_node, last_node_idx)
     #https://kivy.org/doc/stable/api-kivy.uix.recycleview.layout.html
     #see scroll effect
+    #TODO Figure out why the scrolling db in recycleview can be pushed further down and fix it
     #TODO Word a Day Android Widget
     #TODO add random Mando phrases to the loading page
     #TODO add color options
