@@ -22,9 +22,9 @@ from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
 from kivy.uix.checkbox import CheckBox
 from kivy.properties import ObjectProperty, ListProperty, StringProperty, BooleanProperty
 from kivy.uix.recycleview.views import _cached_views, _view_base_cache
-from kivy.config import Config
+from kivy.loader import Loader
 
-#Config.set('graphics', 'multisamples', 0)
+Loader.loading_image = 'images/flag.jpg'
 
 dgrey = (45/255, 45/255, 45/255, 1)
 red = (155/255, 10/255, 10/255, 1)
@@ -114,7 +114,6 @@ class MessageBox(Popup):
         super(MessageBox, self).__init__(**kwargs)
         self.obj = obj
 
-        # set the Popup text to the pronunciation and translation
         # set the Popup text to the pronunciation and translation
         # from the unread_dict
         word_data = kv.get_screen('unread').unread_dict[obj.text]
@@ -535,11 +534,11 @@ if __name__=="__main__":
     # normalize page layouts - FINISHED
     # add images for backgound normal/down - FINISHED
     # Make pretty - FINISHED
-
+    # manually edit long pronunciations to have spaces - FINISHED
 
     #TODO Notifications - Plyer
     #TODO remove test csv and databases
-    #TODO change icons, favicons
+    #TODO change icons
 
 
     #TODO Add Search
@@ -551,6 +550,7 @@ if __name__=="__main__":
     #TODO Word a Day Android Widget
     #TODO add random Mando phrases to the loading page
     #TODO add color options
+
 
 
 
