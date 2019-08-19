@@ -1,7 +1,7 @@
 [app]
 
 # (str) Title of your application
-title = Mando\'a
+title = Learn Mando\'a\!
 
 # (str) Package name
 package.name = mandoa
@@ -46,10 +46,10 @@ requirements = python3,kivy,sqlite3,plyer
 garden_requirements = recycleview, scrolllabel
 
 # (str) Presplash of the application
-#presplash.filename = %(source.dir)s/data/presplash.png
+presplash.filename = images/flag.jpg
 
 # (str) Icon of the application
-#icon.filename = %(source.dir)s/data/icon.png
+icon.filename = images/flag.jpg
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = all
