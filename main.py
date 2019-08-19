@@ -22,6 +22,9 @@ from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
 from kivy.uix.checkbox import CheckBox
 from kivy.properties import ObjectProperty, ListProperty, StringProperty, BooleanProperty
 from kivy.uix.recycleview.views import _cached_views, _view_base_cache
+from kivy.loader import Loader
+
+Loader.loading_image = 'images/flag.jpg'
 
 dgrey = (45/255, 45/255, 45/255, 1)
 red = (155/255, 10/255, 10/255, 1)
@@ -531,12 +534,12 @@ if __name__=="__main__":
     # normalize page layouts - FINISHED
     # add images for backgound normal/down - FINISHED
     # Make pretty - FINISHED
-
+    # manually edit long pronunciations to have spaces - FINISHED
 
     #TODO Notifications - Plyer
     #TODO remove test csv and databases
-    #TODO change icons, favicons
-    #TODO manually edit long pronunciations to have spaces
+    #TODO change icons
+
 
     #TODO Add Search
     #TODO Dynamically Refine Search
