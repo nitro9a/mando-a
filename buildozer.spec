@@ -46,10 +46,10 @@ requirements = python3,kivy,sqlite3,plyer
 garden_requirements = recycleview, scrolllabel
 
 # (str) Presplash of the application
-presplash.filename = images/flag.jpg
+presplash.filename = images/flag.png
 
 # (str) Icon of the application
-icon.filename = images/flag.jpg
+icon.filename = images/flag.png
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = all
