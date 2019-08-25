@@ -34,7 +34,6 @@
 <RV>:
     viewclass: 'SelectableButton'
     RecycleBoxLayout:
-        bcolor: yellow
         padding: "15dp", "5dp", "15dp", "15dp"
         default_size: None, dp(25)
         default_size_hint: 1, None
@@ -71,9 +70,6 @@
         PopMatrix
 
 <SelectableButton>:
-    #color: black
-    #background_normal: ''
-    #disabled_color: yellow
     background_color: grey
     background_down: 'images/black.png'
 
@@ -163,7 +159,6 @@
             ScrollableLabel:
                 id: lbl
                 text: root.obj_text
-                #effect_cls: ScrollEffect
 
         GridLayout:
             orientation: 'horizontal'
@@ -175,10 +170,7 @@
 
             ScaleButton:
                 id: btn
-                text: "  Add to Favorites?"
-                #size_hint_y: 25
-                #text_size: self.width, None
-                #height: self.texture_size[1]
+                text: "Add to Favorites?"
                 on_press: root.add_to_favorites()
                 on_release: app.root.get_screen('favorites').display_database()
 
@@ -236,9 +228,6 @@
             ScaleButton:
                 id: btn
                 text: "  Remove from Favorites?"
-                #size_hint_y: 25
-                #text_size: self.width, None
-                #height: self.texture_size[1]
                 on_press:
                     root.remove_from_favorites()
                 on_release:
@@ -448,10 +437,10 @@
                 text: 'No'
                 on_press:
                     root.dismiss()
+
 #windows
 
 WindowManager:
-
     transition: NoTransition()
     WordADay:
     UnreadWords:
@@ -478,8 +467,7 @@ WindowManager:
 
             ScaleButton:
                 id: page1
-                text: "Get a Word\nor Phrase"
-                halign: 'center'
+                text: "Words"
                 background_color: black
                 color: white
                 on_press:
@@ -490,21 +478,18 @@ WindowManager:
                 text: "Unread"
                 on_press:
                     app.root.current = "unread"
-                    #app.root.get_screen('unread').display_database()
 
             ScaleButton:
                 id: page3
                 text: "Read"
                 on_press:
                     app.root.current = "read"
-                    #app.root.get_screen('read').display_database()
 
             ScaleButton:
                 id: page4
                 text: "Favorites"
                 on_press:
                     app.root.current = "favorites"
-                    #app.root.get_screen('favorites').display_database()
 
         GridLayout:
             cols: 1
@@ -522,9 +507,9 @@ WindowManager:
                     root.ids.btn.disabled = False
                     root.ids.btn.background_color = red
                 on_release:
+                    root.ids.translation.scroll_y = 1
                     app.root.get_screen('unread').display_database()
                     app.root.get_screen('read').display_database()
-                    #root.ids.translation.scroll_y = 1
 
         GridLayout:
             cols: 1
@@ -561,12 +546,10 @@ WindowManager:
                     disabled: True
                     color: black
                     background_color: black
-
                     valign: 'middle'
                     halign: 'center'
                     on_press: root.add_to_favorites()
                     on_release: app.root.get_screen('favorites').display_database()
-
 <UnreadWords>:
     name: "unread"
     reset: reset
@@ -587,8 +570,7 @@ WindowManager:
 
             ScaleButton:
                 id: page1
-                text: "Get a Word\nor Phrase"
-                halign: 'center'
+                text: "Words"
                 on_press:
                     app.root.current = "word"
 
@@ -599,24 +581,18 @@ WindowManager:
                 color: white
                 on_press:
                     app.root.current = "unread"
-                    #app.root.get_screen('unread').display_database()
 
             ScaleButton:
                 id: page3
                 text: "Read"
                 on_press:
                     app.root.current = "read"
-                    #app.root.get_screen('read').display_database()
-
 
             ScaleButton:
                 id: page4
                 text: "Favorites"
                 on_press:
                     app.root.current = "favorites"
-                    #app.root.get_screen('read').display_database()
-
-#unread words label
 
         GridLayout:
             cols: 1
@@ -666,8 +642,7 @@ WindowManager:
 
             ScaleButton:
                 id: page1
-                text: "Get a Word\nor Phrase"
-                halign: 'center'
+                text: "Words"
                 on_press:
                     app.root.current = "word"
 
@@ -676,8 +651,6 @@ WindowManager:
                 text: "Unread"
                 on_press:
                     app.root.current = "unread"
-                    #app.root.get_screen('unread').display_database()
-
 
             ScaleButton:
                 id: page3
@@ -686,16 +659,12 @@ WindowManager:
                 color: white
                 on_press:
                     app.root.current = "read"
-                    #app.root.get_screen('read').display_database()
 
             ScaleButton:
                 id: page4
                 text: "Favorites"
                 on_press:
                     app.root.current = "favorites"
-                    #app.root.get_screen('favorites').display_database()
-
-#read words label
 
         GridLayout:
             cols: 1
@@ -744,25 +713,21 @@ WindowManager:
 
             ScaleButton:
                 id: page1
-                text: "Get a Word\nor Phrase"
-                halign: 'center'
+                text: "Words"
                 on_press:
                     app.root.current = "word"
-
 
             ScaleButton:
                 id: page2
                 text: "Unread"
                 on_press:
                     app.root.current = "unread"
-                    app.root.get_screen('unread').display_database()
 
             ScaleButton:
                 id: page3
                 text: "Read"
                 on_press:
                     app.root.current = "read"
-                    app.root.get_screen('read').display_database()
 
             ScaleButton:
                 id: page4
@@ -771,9 +736,6 @@ WindowManager:
                 color: white
                 on_press:
                     app.root.current = "favorites"
-                    app.root.get_screen('favorites').display_database()
-
-#favorites label
 
         GridLayout:
             cols: 1

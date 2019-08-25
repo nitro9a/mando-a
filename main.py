@@ -1,30 +1,29 @@
-import sqlite3
 import csv
 import random
-import plyer
+import sqlite3
 from plyer import notification, facades
 from utils import database, scalelabel, scrollablelabel
 from kivy.app import App
-from kivy.lang import Builder
 from kivy.clock import Clock
+from kivy.lang import Builder
 from kivy.uix.label import Label
+from kivy.uix.popup import Popup
 from kivy.uix.widget import Widget
 from kivy.uix.button import Button
-from kivy.uix.popup import Popup
 from kivy.effects import kinetic, scroll
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleboxlayout import RecycleBoxLayout
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
-from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
-from kivy.uix.checkbox import CheckBox
-from kivy.properties import ObjectProperty, ListProperty, StringProperty, BooleanProperty
 from kivy.uix.recycleview.views import _cached_views, _view_base_cache
+from kivy.properties import ObjectProperty, ListProperty, StringProperty, BooleanProperty
+
 from kivy.loader import Loader
 
-Loader.loading_image = 'images/flag.jpg'
+Loader.loading_image = 'images/flag.png'
 
 dgrey = (45/255, 45/255, 45/255, 1)
 red = (155/255, 10/255, 10/255, 1)
@@ -38,7 +37,7 @@ current_word = "test"
 def reset_dbs(self):
 
     def create_database(csv_file, database, execute_create, execute_insert):
-        f = open(csv_file,'r', encoding='utf-8', errors= 'ignore')  # TEMPORARY FIX
+        f = open(csv_file,'r', encoding='utf-8', errors= 'ignore')
         next(f, None)
         reader = csv.reader(f)
 
@@ -257,7 +256,6 @@ class WordADay(Screen):
     translation = ObjectProperty(None)
 
     def __init__(self, **kwargs):
-        #global obj_text_list
         super(WordADay, self).__init__(**kwargs)
         self.unread_dict = {}
 
@@ -525,7 +523,6 @@ if __name__=="__main__":
     # Add real database and csv files and change code to utilize them in mando_a.py and main.py - FINISHED
     # Fix issue with page visibly refreshing upon selecting page - FINISHED
     # Add touch events - FINISHED (unnecessary)
-    # fix issue with page visibly refreshing upon selecting page - FINISHED
     # Edit database to have only unique entries; edit for consistency - FINISHED
     # disable favorites button when it isn't in use - FINISHED
     # Set all labels, buttons, and popups to scale (possibly use scatter, once on touch events are added)- FINISHED
@@ -535,10 +532,10 @@ if __name__=="__main__":
     # add images for backgound normal/down - FINISHED
     # Make pretty - FINISHED
     # manually edit long pronunciations to have spaces - FINISHED
+    # change icons - FINISHED
+    # remove test csv and databases - FINISHED
 
     #TODO Notifications - Plyer
-    #TODO remove test csv and databases
-    #TODO change icons
 
 
     #TODO Add Search
